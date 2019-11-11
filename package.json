@@ -1,0 +1,57 @@
+{
+  "name": "glob-tool",
+  "version": "1.0.0",
+  "description": "",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "npm run build:clean && npm run build:template && npm run build:static && npm run build:tool",
+    "build:clean": "do-vue clean",
+    "build:template": "do-vue template",
+    "build:static": "copyfiles --up 2 ./src/static/{*,**/*} dist",
+    "build:tool": "do-vue tool src/glob-tool dist",
+    "dev": "npm run dev:prep && parcel ./src/glob-tool/index.html --out-dir ./dev --port 8000",
+    "dev:prep": "npm run build:template && npm run dev:static",
+    "dev:static": "copyfiles --up 2 ./src/static/{*,**/*} dev",
+    "test": "npm run test:ts-vue && npm run test:scss",
+    "test:ts-vue": "tsc && eslint './src/**/*.{vue,ts}'",
+    "test:scss": "sass-lint ./src/**/*.scss --verbose --no-exit --config .sasslintrc",
+    "test:ts-vue:fix": "tsc && eslint './src/**/*.{vue,ts}' --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/do-community/glob-tool.git"
+  },
+  "keywords": [
+    "glob"
+  ],
+  "author": "DigitalOcean",
+  "bugs": {
+    "url": "https://github.com/do-community/glob-tool/issues"
+  },
+  "homepage": "https://github.com/do-community/glob-tool#readme",
+  "dependencies": {
+    "@babel/runtime": "^7.5.5",
+    "abortcontroller-polyfill": "^1.4.0",
+    "babel-polyfill": "^6.26.0",
+    "do-bulma": "git+https://github.com/do-community/do-bulma.git",
+    "do-vue": "git+https://github.com/do-community/do-vue.git",
+    "parcel-bundler": "1.12.3",
+    "vue": "^2.6.10",
+    "vue-hot-reload-api": "^2.3.3"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.5.5",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "@vue/component-compiler-utils": "^3.0.0",
+    "copyfiles": "^2.1.1",
+    "eslint": "^6.2.2",
+    "eslint-plugin-vue": "5.2.3",
+    "posthtml": "^0.11.4",
+    "posthtml-extend": "^0.3.0",
+    "sass": "^1.22.9",
+    "sass-lint": "^1.13.1",
+    "typescript": "^3.5.3",
+    "vue-template-compiler": "^2.6.10"
+  }
+}
