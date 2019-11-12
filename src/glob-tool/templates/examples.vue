@@ -32,6 +32,9 @@ limitations under the License.
         <a class="jump-link" @click="set('/[abc]-xyz/*.js', ['/a-xyz/file.js', '/b-xyz/file.js', '/c-xyz/file.js', '/d-xyz/file.js'])">
             {{ i18n.templates.examples.range }} <code class="slim">[abc]</code>
         </a>
+        <a class="jump-link" @click="set('/[!abc]-xyz/*.js', ['/d-xyz/file.js', '/e-xyz/file.js', '/a-xyz/file.js', '/b-xyz/file.js', '/c-xyz/file.js'])">
+            {{ i18n.templates.examples.notRange }} <code class="slim">[!abc]</code>
+        </a>
         <a class="jump-link" @click="set('/!(src|build)/*.js', ['/public/file.js', '/dist/file.js', '/src/file.js', '/build/file.js'])">
             {{ i18n.templates.examples.notPatterns }} <code class="slim">!(a|b)</code>
         </a>
@@ -43,6 +46,9 @@ limitations under the License.
         </a>
         <a class="jump-link" @click="set('file+(.min|.umd).js', ['file.min.js', 'file.umd.js', 'file.min.umd.js', 'file.js'])">
             {{ i18n.templates.examples.oneOrMorePatterns }} <code class="slim">+(a|b)</code>
+        </a>
+        <a class="jump-link" @click="set('file@(.min|.umd).js', ['file.min.js', 'file.umd.js', 'file.min.umd.js', 'file.js'])">
+            {{ i18n.templates.examples.exactlyOnePattern }} <code class="slim">@(a|b)</code>
         </a>
     </p>
 </template>

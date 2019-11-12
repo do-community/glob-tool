@@ -85,4 +85,36 @@ $header: #0071fe;
       }
     }
   }
+
+  .help-modal {
+    i {
+      font-size: .9em;
+      color: $muted;
+    }
+
+    ul {
+      padding-left: $margin;
+
+      li {
+        position: relative;
+
+        &::before {
+          $bullet-size: 6px;
+          position: absolute;
+          left: -$margin;
+          top: $margin - $bullet-size;
+          display: block;
+          width: $bullet-size;
+          height: $bullet-size;
+          border-radius: $bullet-size / 2;
+          background: $dark-blue;
+          content: "";
+        }
+
+        + li {
+          margin-top: $margin / 2;
+        }
+      }
+    }
+  }
 }

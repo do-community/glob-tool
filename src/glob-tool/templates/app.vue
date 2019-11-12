@@ -25,6 +25,9 @@ limitations under the License.
                 </div>
             </template>
             <template v-slot:buttons>
+                <a class="button" @click="help">
+                    Help
+                </a>
             </template>
         </Header>
 
@@ -58,7 +61,8 @@ limitations under the License.
             </div>
         </div>
 
-        <Footer :text="i18n.templates.app.oss" />
+        <Footer :text="i18n.templates.app.oss"></Footer>
+        <HelpModal ref="HelpModal"></HelpModal>
     </div>
 </template>
 
@@ -69,6 +73,7 @@ limitations under the License.
     import Header from "do-vue/src/templates/header"
     import Footer from "do-vue/src/templates/footer"
     import Examples from "./examples"
+    import HelpModal from "./help_modal"
 
     export default {
         name: "App",
@@ -76,6 +81,7 @@ limitations under the License.
             Header,
             Footer,
             Examples,
+            HelpModal,
         },
         data() {
             return {
@@ -137,6 +143,10 @@ limitations under the License.
                         }
                     }
                 })
+            },
+            help() {
+                console.log(this)
+                this.$refs.HelpModal.toggle()
             }
         },
     }
