@@ -123,12 +123,26 @@ limitations under the License.
                 parsed.tests = tests.map(x => x.textContent).filter(x => !!x.trim())
                 window.history.pushState({}, "", `?${queryString.stringify(parsed)}`)
             },
+            empty() {
+                if (this.$refs.textarea.children.length === 0) {
+                    const div = document.createElement("div")
+                    const br = document.createElement("br")
+                    div.appendChild(br)
+                    this.$refs.textarea.appendChild(div)
+                }
+            },
             test() {
+                // Ensure it isn't empty
+                this.empty()
+
+                // Get the data
                 const glob = this.$refs.input.value
                 const children = Array.from(this.$refs.textarea.children)
 
+                // Store in the URL
                 this.store(glob, children)
 
+                // Run the hit/miss check
                 children.forEach(child => {
                     if (child.textContent.trim() === "") {
                         child.classList.remove("miss")
