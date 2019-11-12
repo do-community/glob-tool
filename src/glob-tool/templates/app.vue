@@ -60,25 +60,29 @@ limitations under the License.
         </Header>
 
         <div class="main container">
-            <h3 class="title is-3">Glob string</h3>
+            <h3 class="title is-3">
+                Glob string
+            </h3>
             <div class="input-container">
                 <label for="globInput" class="hidden">Glob string</label>
                 <i class="fas fa-magic"></i>
                 <input id="globInput"
+                       ref="input"
                        class="input"
                        type="text"
                        placeholder="/**/*.js"
                        value="/**/*.js"
-                       ref="input"
                        @keyup="test"
                 />
             </div>
 
-            <br/>
+            <br />
 
-            <h3 class="title is-3">Test strings</h3>
+            <h3 class="title is-3">
+                Test strings
+            </h3>
             <div class="input-container">
-                <div class="textarea input" ref="textarea" contenteditable="true" @keyup="test">
+                <div ref="textarea" class="textarea input" contenteditable="true" @keyup="test">
                     <div>/hello/world.js</div>
                     <div>/test/some/globs</div>
                 </div>
@@ -106,6 +110,10 @@ limitations under the License.
             return {
                 i18n,
             }
+        },
+        mounted() {
+            this.load()
+            this.test()
         },
         methods: {
             setGlob(glob) {
@@ -135,7 +143,7 @@ limitations under the License.
             store(glob, tests) {
                 const parsed = queryString.parse(window.location.search)
                 parsed.glob = glob
-                parsed.tests = tests.map(x => x.textContent).filter(x => !!x.trim());
+                parsed.tests = tests.map(x => x.textContent).filter(x => !!x.trim())
                 window.history.pushState({}, "", `?${queryString.stringify(parsed)}`)
             },
             test() {
@@ -159,10 +167,6 @@ limitations under the License.
                     }
                 })
             }
-        },
-        mounted() {
-            this.load()
-            this.test()
         },
     }
 </script>
