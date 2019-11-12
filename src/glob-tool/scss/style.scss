@@ -16,3 +16,71 @@ limitations under the License.
 
 $header: #0071fe;
 @import "~do-bulma/src/style";
+
+.do-bulma {
+  a.jump-link {
+    text-decoration: none;
+  }
+
+  .main {
+    * + .title {
+      margin-top: $margin * 3;
+    }
+
+    .input-container {
+      .textarea.input {
+        $icon-width: 18px;
+        padding: ($margin / 2) $margin ($margin / 2) 0;
+        position: relative;
+        z-index: 0;
+
+        &::before {
+          background: darken($panel, 5%);
+          bottom: 0;
+          content: "";
+          display: block;
+          left: 0;
+          position: absolute;
+          top: 0;
+          width: $margin * 1.5 + $icon-width;
+          z-index: -1;
+        }
+
+        > div {
+          line-height: 1.3;
+          padding-left: $margin * 2 + $icon-width;
+          position: relative;
+
+          &::before {
+            content: "";
+            display: inline-block;
+            font-family: "Font Awesome 5 Free";
+            font-size: 14px;
+            font-weight: 900;
+            left: $margin * .75;
+            position: absolute;
+            text-align: center;
+            top: 50%;
+            transform: translateY(-50%);
+            width: $icon-width;
+          }
+
+          &.hit {
+            color: $primary;
+
+            &::before {
+              content: "\f00c";
+            }
+          }
+
+          &.miss {
+            &::before {
+              color: $dark-grey;
+              content: "\f00d";
+            }
+          }
+        }
+      }
+    }
+  }
+}
