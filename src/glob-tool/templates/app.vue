@@ -21,38 +21,7 @@ limitations under the License.
             </template>
             <template v-slot:header>
                 <div>
-                    <p>
-                        <b>Examples:</b>
-                        <span>
-                            <a class="jump-link" @click="set('/*.js', ['/one.js', '/two.js', '/three.js'])">
-                                Zero or More Chars <code class="slim">*</code>
-                            </a>
-                            <a class="jump-link" @click="set('/?.js', ['/a.js', '/b.js', '/file.js'])">
-                                One Char <code class="slim">?</code>
-                            </a>
-                            <a class="jump-link" @click="set('/**/*.js', ['/file.js', '/one/file.js', '/one/two/file.js', '/one/two/three/file.js'])">
-                                Recursive <code class="slim">**/*</code>
-                            </a>
-                            <a class="jump-link" @click="set('/{ab,cd,ef}/*.js', ['/ab/file.js', '/cd/file.js', '/ef/file.js', '/gh/file.js'])">
-                                List <code class="slim">{a,b,c}</code>
-                            </a>
-                            <a class="jump-link" @click="set('/[abc]-xyz/*.js', ['/a-xyz/file.js', '/b-xyz/file.js', '/c-xyz/file.js', '/d-xyz/file.js'])">
-                                Range <code class="slim">[abc]</code>
-                            </a>
-                            <a class="jump-link" @click="set('/!(src|build)/*.js', ['/public/file.js', '/dist/file.js', '/src/file.js', '/build/file.js'])">
-                                Not Patterns <code class="slim">!(a|b)</code>
-                            </a>
-                            <a class="jump-link" @click="set('/file?(.min|.umd).js', ['/file.js', '/file.min.js', '/file.umd.js', '/file.es6.js'])">
-                                Zero or One Pattern <code class="slim">?(a|b)</code>
-                            </a>
-                            <a class="jump-link" @click="set('/file*(.min|.umd).js', ['/file.js', '/file.min.js', '/file.umd.js', '/file.min.umd.js'])">
-                                Zero or More Patterns <code class="slim">*(a|b)</code>
-                            </a>
-                            <a class="jump-link" @click="set('/file+(.min|.umd).js', ['/file.min.js', '/file.umd.js', '/file.min.umd.js', '/file.js'])">
-                                One or More Patterns <code class="slim">+(a|b)</code>
-                            </a>
-                        </span>
-                    </p>
+                    <Examples @set="set"></Examples>
                 </div>
             </template>
             <template v-slot:buttons>
@@ -61,10 +30,10 @@ limitations under the License.
 
         <div class="main container">
             <h3 class="title is-3">
-                Glob string
+                {{ i18n.templates.app.input }}
             </h3>
             <div class="input-container">
-                <label for="globInput" class="hidden">Glob string</label>
+                <label for="globInput" class="hidden">{{ i18n.templates.app.input }}</label>
                 <i class="fas fa-magic"></i>
                 <input id="globInput"
                        ref="input"
@@ -79,7 +48,7 @@ limitations under the License.
             <br />
 
             <h3 class="title is-3">
-                Test strings
+                {{ i18n.templates.app.tests }}
             </h3>
             <div class="input-container">
                 <div ref="textarea" class="textarea input" contenteditable="true" @keyup="test">
@@ -99,12 +68,14 @@ limitations under the License.
     import i18n from "../i18n"
     import Header from "do-vue/src/templates/header"
     import Footer from "do-vue/src/templates/footer"
+    import Examples from "./examples"
 
     export default {
         name: "App",
         components: {
             Header,
             Footer,
+            Examples,
         },
         data() {
             return {
