@@ -27,7 +27,7 @@ limitations under the License.
         <p>
             Alongside plaintext, globs have a set of control (or special) characters that allow them to become far more
             powerful that just some boring old text.
-            <br/>
+            <br />
             <i>Note: we have examples for all of these in the header of the glob tool!</i>
         </p>
 
@@ -40,7 +40,7 @@ limitations under the License.
             </li>
             <li>
                 The use of <code class="slim">[abc]</code> matches a range of characters.
-                <br/>
+                <br />
                 <i>
                     If the first character of the range is <code class="slim">!</code> or <code class="slim">^</code>
                     then it matches any character not in the range.
@@ -76,13 +76,13 @@ limitations under the License.
 
     export default {
         name: "HelpModal",
+        components: {
+            Modal,
+        },
         data() {
             return {
                 i18n,
             }
-        },
-        components: {
-            Modal,
         },
         methods: {
             toggle() {
