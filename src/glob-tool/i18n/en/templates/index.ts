@@ -1,3 +1,4 @@
 import app from "./app"
+import examples from "./examples"
 
-export default { app } as {[key: string]: {[key: string]: string}}
+export default { app, examples } as {[key: string]: {[key: string]: string}}
