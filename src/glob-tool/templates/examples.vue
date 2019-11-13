@@ -26,7 +26,7 @@ limitations under the License.
         <a class="jump-link" @click="set('/**/*.js', ['/file.js', '/one/file.js', '/one/two/file.js', '/one/two/three/file.js'])">
             {{ i18n.templates.examples.recursive }} <code class="slim">**</code>
         </a>
-        <a class="jump-link" @click="set('/{ab,cd,ef}/*.js', ['/ab/file.js', '/cd/file.js', '/ef/file.js', '/gh/file.js'])">
+        <a class="jump-link" @click="set('/{static,build/public}/*.js', ['/static/file.js', '/build/public/file.js', '/src/file.js'])">
             {{ i18n.templates.examples.list }} <code class="slim">{a,b,c}</code>
         </a>
         <a class="jump-link" @click="set('/[abc]-xyz/*.js', ['/a-xyz/file.js', '/b-xyz/file.js', '/c-xyz/file.js', '/d-xyz/file.js'])">
@@ -38,16 +38,16 @@ limitations under the License.
         <a class="jump-link" @click="set('/!(src|build)/*.js', ['/public/file.js', '/dist/file.js', '/src/file.js', '/build/file.js'])">
             {{ i18n.templates.examples.notPatterns }} <code class="slim">!(a|b)</code>
         </a>
-        <a class="jump-link" @click="set('file?(.min|.umd).js', ['file.js', 'file.min.js', 'file.umd.js', 'file.es6.js'])">
+        <a class="jump-link" @click="set('file?(.min|.umd).js', ['file.js', 'file.min.js', 'file.umd.js', 'file.min.umd.js', 'file.es6.js'])">
             {{ i18n.templates.examples.zeroOrOnePattern }} <code class="slim">?(a|b)</code>
         </a>
-        <a class="jump-link" @click="set('file*(.min|.umd).js', ['file.js', 'file.min.js', 'file.umd.js', 'file.min.umd.js'])">
+        <a class="jump-link" @click="set('file*(.min|.umd).js', ['file.js', 'file.min.js', 'file.umd.js', 'file.min.umd.js', 'file.es6.js'])">
             {{ i18n.templates.examples.zeroOrMorePatterns }} <code class="slim">*(a|b)</code>
         </a>
-        <a class="jump-link" @click="set('file+(.min|.umd).js', ['file.min.js', 'file.umd.js', 'file.min.umd.js', 'file.js'])">
+        <a class="jump-link" @click="set('file+(.min|.umd).js', ['file.min.js', 'file.umd.js', 'file.min.umd.js', 'file.es6.js', 'file.js'])">
             {{ i18n.templates.examples.oneOrMorePatterns }} <code class="slim">+(a|b)</code>
         </a>
-        <a class="jump-link" @click="set('file@(.min|.umd).js', ['file.min.js', 'file.umd.js', 'file.min.umd.js', 'file.js'])">
+        <a class="jump-link" @click="set('file@(.min|.umd).js', ['file.min.js', 'file.umd.js', 'file.min.umd.js', 'file.es6.js', 'file.js'])">
             {{ i18n.templates.examples.exactlyOnePattern }} <code class="slim">@(a|b)</code>
         </a>
     </p>

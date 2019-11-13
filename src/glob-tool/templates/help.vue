@@ -39,6 +39,17 @@ limitations under the License.
                 <code class="slim">?</code> matches exactly one character.
             </li>
             <li>
+                <code class="slim">{ab,cd,ef}</code> matches exactly one of the "parts" provided.
+                <br />
+                <i>
+                    These "parts" can also span multiple "sections" of the glob, so you can include directory separators
+                    in them.
+                    <br />
+                    For example, <code class="slim">{ab,cd/ef}/*.js</code> is valid and would match
+                    <code class="slim">ab/file.js</code> as well as <code class="slim">cd/ef/file.js</code>.
+                </i>
+            </li>
+            <li>
                 The use of <code class="slim">[abc]</code> matches a range of characters.
                 <br />
                 <i>
