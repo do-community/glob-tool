@@ -18,6 +18,7 @@ limitations under the License.
     <div class="all do-bulma">
         <Header :title="i18n.templates.app.title">
             <template v-slot:description>
+                {{ i18n.templates.app.description }}
             </template>
             <template v-slot:header>
                 <div>
@@ -49,6 +50,7 @@ limitations under the License.
 
             <h2 class="title is-3">
                 {{ i18n.templates.app.tests }}
+                <br /><small>{{ i18n.templates.app.testsSubtitle }}</small>
             </h2>
             <div class="input-container">
                 <div ref="textarea" class="textarea input" contenteditable="true" @keyup="test">

@@ -27,6 +27,18 @@ $header: #0071fe;
       margin-top: $margin * 3;
     }
 
+    .title {
+      margin-bottom: $margin;
+
+      small {
+        color: $muted;
+        display: block;
+        font-size: .5em;
+        line-height: 1.5;
+        padding: .1em;
+      }
+    }
+
     .input-container {
       .textarea.input {
         $icon-width: 18px;
