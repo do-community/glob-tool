@@ -24,7 +24,7 @@ limitations under the License.
             {{ i18n.templates.examples.oneChar }} <code class="slim">?</code>
         </a>
         <a class="jump-link" @click="set('/**/*.js', ['/file.js', '/one/file.js', '/one/two/file.js', '/one/two/three/file.js'])">
-            {{ i18n.templates.examples.recursive }} <code class="slim">**/*</code>
+            {{ i18n.templates.examples.recursive }} <code class="slim">**</code>
         </a>
         <a class="jump-link" @click="set('/{ab,cd,ef}/*.js', ['/ab/file.js', '/cd/file.js', '/ef/file.js', '/gh/file.js'])">
             {{ i18n.templates.examples.list }} <code class="slim">{a,b,c}</code>

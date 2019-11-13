@@ -31,21 +31,8 @@ $header: #0071fe;
       .textarea.input {
         $icon-width: 18px;
         $left: $margin * 2 + $icon-width;
+        box-shadow: inset ($margin * 1.5 + $icon-width) 0 darken($panel, 5%);
         padding: ($margin / 2) $margin ($margin / 2) $left;
-        position: relative;
-        z-index: 0;
-
-        &::before {
-          background: darken($panel, 5%);
-          bottom: 0;
-          content: "";
-          display: block;
-          left: 0;
-          position: absolute;
-          top: 0;
-          width: $margin * 1.5 + $icon-width;
-          z-index: -1;
-        }
 
         > div {
           line-height: 1.3;
