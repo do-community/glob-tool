@@ -15,7 +15,7 @@ limitations under the License.
 -->
 
 <template>
-    <Modal ref="Modal" title="A brief globs explainer" class="help-modal">
+    <div class="help">
         <h3>What are globs?</h3>
         <p>
             Globs are the patterns you use when you run commands such as <code class="slim">ls src/*.js</code>, or you
@@ -28,7 +28,7 @@ limitations under the License.
             Alongside plaintext, globs have a set of control (or special) characters that allow them to become far more
             powerful that just some boring old text.
             <br />
-            <i>Note: we have examples for all of these in the header of the glob tool!</i>
+            <i>Note: we have examples for all of these at the top of this page!</i>
         </p>
 
         <ul>
@@ -67,27 +67,12 @@ limitations under the License.
                 subdirectories. This allows for recursive directory searching easily.
             </li>
         </ul>
-    </Modal>
+    </div>
 </template>
 
 <script>
-    import i18n from "../i18n"
-    import Modal from "do-vue/src/templates/modal"
 
     export default {
-        name: "HelpModal",
-        components: {
-            Modal,
-        },
-        data() {
-            return {
-                i18n,
-            }
-        },
-        methods: {
-            toggle() {
-                this.$refs.Modal.toggle()
-            },
-        },
+        name: "Help",
     }
 </script>

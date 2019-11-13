@@ -25,16 +25,13 @@ limitations under the License.
                 </div>
             </template>
             <template v-slot:buttons>
-                <a class="button" @click="help">
-                    Help
-                </a>
             </template>
         </Header>
 
         <div class="main container">
-            <h3 class="title is-3">
+            <h2 class="title is-3">
                 {{ i18n.templates.app.input }}
-            </h3>
+            </h2>
             <div class="input-container">
                 <label for="globInput" class="hidden">{{ i18n.templates.app.input }}</label>
                 <i class="fas fa-magic"></i>
@@ -50,19 +47,21 @@ limitations under the License.
 
             <br />
 
-            <h3 class="title is-3">
+            <h2 class="title is-3">
                 {{ i18n.templates.app.tests }}
-            </h3>
+            </h2>
             <div class="input-container">
                 <div ref="textarea" class="textarea input" contenteditable="true" @keyup="test">
                     <div>/hello/world.js</div>
                     <div>/test/some/globs</div>
                 </div>
             </div>
+
+            <br />
+            <Help></Help>
         </div>
 
         <Footer :text="i18n.templates.app.oss"></Footer>
-        <HelpModal ref="HelpModal"></HelpModal>
     </div>
 </template>
 
@@ -73,7 +72,7 @@ limitations under the License.
     import Header from "do-vue/src/templates/header"
     import Footer from "do-vue/src/templates/footer"
     import Examples from "./examples"
-    import HelpModal from "./help_modal"
+    import Help from "./help"
 
     export default {
         name: "App",
@@ -81,7 +80,7 @@ limitations under the License.
             Header,
             Footer,
             Examples,
-            HelpModal,
+            Help,
         },
         data() {
             return {
@@ -157,10 +156,6 @@ limitations under the License.
                         }
                     }
                 })
-            },
-            help() {
-                console.log(this)
-                this.$refs.HelpModal.toggle()
             }
         },
     }

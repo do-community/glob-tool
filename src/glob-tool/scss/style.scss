@@ -86,7 +86,10 @@ $header: #0071fe;
     }
   }
 
-  .help-modal {
+  .help {
+    font-size: 1rem;
+    margin-top: $margin * 4;
+
     i {
       color: $muted;
       font-size: .9em;
