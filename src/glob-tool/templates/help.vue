@@ -59,7 +59,12 @@ limitations under the License.
             </li>
             <li>
                 <code class="slim">!(ab|cd|ef)</code> matches anything that does not directly match any of the patterns
-                in the brackets (separated by the pipe character <code class="slim">|</code>).
+                in the parentheses.
+                <br />
+                <i>
+                    Patterns in the group are separated by the pipe character
+                    <code class="slim" style="font-style: normal;">|</code>.
+                </i>
             </li>
             <li>
                 <code class="slim">?(ab|cd|ef)</code> matches zero or one occurrence of the patterns given.
