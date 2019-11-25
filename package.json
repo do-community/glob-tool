@@ -10,6 +10,7 @@
     "build:static": "copyfiles --up 2 ./src/static/{*,**/*} dist",
     "build:tool": "do-vue tool src/glob-tool dist",
     "dev": "npm run dev:prep && parcel ./src/glob-tool/index.html --out-dir ./dev --port 8000",
+    "deploy:spaces:comment": "do-vue comment glob-tool",
     "dev:prep": "npm run build:template && npm run dev:static",
     "dev:static": "copyfiles --up 2 ./src/static/{*,**/*} dev",
     "test": "npm run test:ts-vue && npm run test:scss",
