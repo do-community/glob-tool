@@ -53,7 +53,13 @@ limitations under the License.
                 <br /><small>{{ i18n.templates.app.testsSubtitle }}</small>
             </h2>
             <div class="input-container">
-                <div ref="textarea" class="textarea input" contenteditable="true" @keyup="test" @paste="paste">
+                <div ref="textarea"
+                     class="textarea input"
+                     contenteditable="true"
+                     @keydown="down"
+                     @keyup="up"
+                     @paste="paste"
+                >
                     <div>/hello/world.js</div>
                     <div>/test/some/globs</div>
                 </div>
@@ -87,6 +93,7 @@ limitations under the License.
         data() {
             return {
                 i18n,
+                shiftActive: false,
             }
         },
         mounted() {
@@ -191,7 +198,24 @@ limitations under the License.
                     }
                 })
             },
+            down(e) {
+                // Track if shift is pressed for pasting
+                if (e.code === "ShiftLeft" || e.code === "ShiftRight" || e.keyCode === 16)
+                    this.$data.shiftActive = true
+            },
+            up(e) {
+                // Track if shift is pressed for pasting
+                if (e.code === "ShiftLeft" || e.code === "ShiftRight" || e.keyCode === 16)
+                    this.$data.shiftActive = false
+
+                // Run tests, something in the test strings might have changed!
+                this.test()
+            },
             paste(e) {
+                // If shift is pressed, do a native paste (don't split lines)
+                if (this.$data.shiftActive) return
+
+                // Don't do a native paste
                 e.preventDefault()
 
                 // Get the pasted text and split by new line
