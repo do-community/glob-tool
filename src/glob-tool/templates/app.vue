@@ -53,7 +53,13 @@ limitations under the License.
                 <br /><small>{{ i18n.templates.app.testsSubtitle }}</small>
             </h2>
             <div class="input-container">
-                <div ref="textarea" class="textarea input" contenteditable="true" @keyup="test">
+                <div ref="textarea"
+                     class="textarea input"
+                     contenteditable="true"
+                     @keydown="down"
+                     @keyup="up"
+                     @paste="paste"
+                >
                     <div>/hello/world.js</div>
                     <div>/test/some/globs</div>
                 </div>
@@ -87,6 +93,7 @@ limitations under the License.
         data() {
             return {
                 i18n,
+                shiftActive: false,
             }
         },
         mounted() {
@@ -125,6 +132,14 @@ limitations under the License.
                 window.history.pushState({}, "", `?${queryString.stringify(parsed)}`)
             },
             empty() {
+                // Ensure no lost brs
+                for (const child of this.$refs.textarea.children) {
+                    if (child.nodeName.toLowerCase() === "br") {
+                        this.$refs.textarea.removeChild(child)
+                    }
+                }
+
+                // If we're empty, create a blank child
                 if (this.$refs.textarea.children.length === 0) {
                     const div = document.createElement("div")
                     const br = document.createElement("br")
@@ -132,9 +147,33 @@ limitations under the License.
                     this.$refs.textarea.appendChild(div)
                 }
             },
+            standard() {
+                // If we have any text directly in the parent, move it to a child div
+                for (const child of this.$refs.textarea.childNodes) {
+                    if (child.nodeName === "#text") {
+                        const div = document.createElement("div")
+                        const text = document.createTextNode(child.textContent)
+                        div.appendChild(text)
+                        this.$refs.textarea.insertBefore(div, child.nextSibling)
+                        child.parentElement.removeChild(child)
+                    }
+                }
+            },
+            focus() {
+                // If we're focused in the textarea, focus on first div instead
+                const select = window.getSelection()
+                if (select.isCollapsed && select.focusNode == this.$refs.textarea)
+                    select.collapse(this.$refs.textarea.children[0])
+            },
             test() {
-                // Ensure it isn't empty
+                // Ensure we don't have bugged text
+                this.standard()
+
+                // Ensure we have a valid empty state if empty
                 this.empty()
+
+                // Make sure we're now actually focused in the first div and not the parent
+                this.focus()
 
                 // Get the data
                 const glob = this.$refs.input.value
@@ -158,6 +197,99 @@ limitations under the License.
                         }
                     }
                 })
+            },
+            down(e) {
+                // Track if shift is pressed for pasting
+                if (e.code === "ShiftLeft" || e.code === "ShiftRight" || e.keyCode === 16)
+                    this.$data.shiftActive = true
+            },
+            up(e) {
+                // Track if shift is pressed for pasting
+                if (e.code === "ShiftLeft" || e.code === "ShiftRight" || e.keyCode === 16)
+                    this.$data.shiftActive = false
+
+                // Run tests, something in the test strings might have changed!
+                this.test()
+            },
+            paste(e) {
+                // If shift is pressed, do a native paste (don't split lines)
+                if (this.$data.shiftActive) return
+
+                // Don't do a native paste
+                e.preventDefault()
+
+                // Get the pasted text and split by new line
+                let pastedText
+                if (window.clipboardData && window.clipboardData.getData) { // IE
+                    pastedText = window.clipboardData.getData("Text")
+                } else if (e.clipboardData && e.clipboardData.getData) {
+                    pastedText = e.clipboardData.getData("text/plain")
+                }
+                pastedText = pastedText.split("\n")
+                if (!pastedText.length) return
+
+                // Attempt to determine where the user currently is
+                // If we can't, assume end of text area
+                const select = window.getSelection()
+                let currentElm = select.focusNode
+                if (currentElm.nodeName.toLowerCase() !== "div") currentElm = currentElm.parentElement
+                if (currentElm.parentElement !== this.$refs.textarea) currentElm = this.$refs.textarea.lastElementChild
+
+                // If the user has selected a range, delete it as we'll be replacing it
+                const range = select.getRangeAt(0)
+                if (range.startOffset !== range.endOffset) range.deleteContents()
+
+                // If we've decided what the user has selected works, ensure we paste at the right point
+                let textAfter
+                if (currentElm == select.focusNode || currentElm.firstChild == select.focusNode) {
+                    select.collapseToStart()
+                    const index = select.getRangeAt(0).startOffset
+                    textAfter = select.focusNode.textContent.slice(index)
+
+                    // Update the current node's text to only be the text before the cursor
+                    select.focusNode.textContent = select.focusNode.textContent.slice(0, index)
+                }
+
+                // Append first to current line (if it's actually a line)
+                if (currentElm.nodeName.toLowerCase() === "div") {
+                    // Remove the br added to an otherwise empty line
+                    if (currentElm.textContent === "" &&
+                        currentElm.firstChild &&
+                        currentElm.firstChild.nodeName.toLowerCase() === "br") {
+                        currentElm.removeChild(currentElm.firstChild)
+                    }
+                    // Add the text
+                    currentElm.innerText += pastedText.shift()
+                }
+
+                // Insert the rest on new lines after the current
+                for (const line of pastedText) {
+                    const div = document.createElement("div")
+                    const text = document.createTextNode(line)
+                    div.appendChild(text)
+                    this.$refs.textarea.insertBefore(div, currentElm.nextSibling)
+                    currentElm = div
+                }
+
+                // Store where the cursor will need to be
+                const newSelectIndex = currentElm.firstChild.textContent.length
+
+                // If we have text from after the user's initial selection, restore it
+                if (textAfter) currentElm.firstChild.textContent += textAfter
+
+                // Move cursor to the end of the pasted content
+                window.getSelection().collapse(currentElm.firstChild, newSelectIndex)
+
+                // Scroll the new pasted content into view if it isn't viewable
+                const currentElmTop = currentElm.offsetTop - currentElm.parentElement.offsetTop
+                const currentElmBottom = currentElm.getBoundingClientRect().height + currentElmTop
+                const viewableTop = this.$refs.textarea.scrollTop
+                const viewableBottom = this.$refs.textarea.getBoundingClientRect().height + viewableTop
+                if (currentElmTop < viewableTop || currentElmBottom  > viewableBottom)
+                    this.$refs.textarea.scrollTop = currentElmTop
+
+                // We're done, so run a check
+                this.test()
             }
         },
     }
