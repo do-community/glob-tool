@@ -184,13 +184,15 @@ limitations under the License.
                 if (!pastedText.length) return
 
                 // Attempt to determine where the user currently is
-                // If we can't assume end of text area
+                // If we can't, assume end of text area
                 const select = window.getSelection()
                 let currentElm = select.focusNode
                 if (currentElm.nodeName.toLowerCase() !== 'div') currentElm = currentElm.parentElement
                 if (currentElm.parentElement !== this.$refs.textarea) currentElm = this.$refs.textarea.lastElementChild
 
-                // TODO: if selected range, remove that first
+                // If the user has selected a range, delete it as we'll be replacing it
+                const range = select.getRangeAt(0)
+                if (range.startOffset !== range.endOffset) range.deleteContents()
 
                 // If we've decided what the user has selected works, ensure we paste at the right point
                 let textAfter
@@ -212,7 +214,7 @@ limitations under the License.
                         currentElm.removeChild(currentElm.firstChild)
                     }
                     // Add the text
-                    currentElm.innerText += pastedText.pop()
+                    currentElm.innerText += pastedText.shift()
                 }
 
                 // Insert the rest on new lines after the current
