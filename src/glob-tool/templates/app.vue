@@ -192,13 +192,15 @@ limitations under the License.
 
                 // TODO: if selected range, remove that first
 
-                // TODO: collapse selection and get position, split current there and insert before second part of split
-                if (currentElm === select.focusNode || currentElm.firstChild == select.focusNode) {
+                // If we've decided what the user has selected works, ensure we paste at the right point
+                let textAfter
+                if (currentElm == select.focusNode || currentElm.firstChild == select.focusNode) {
                     select.collapseToStart()
                     const index = select.getRangeAt(0).startOffset
-                    const textBefore = select.focusNode.textContent.slice(0, index)
-                    const textAfter = select.focusNode.textContent.slice(index)
-                    console.log(textBefore, textAfter)
+                    textAfter = select.focusNode.textContent.slice(index)
+
+                    // Update the current node's text to only be the text before the cursor
+                    select.focusNode.textContent = select.focusNode.textContent.slice(0, index)
                 }
 
                 // Append first to current line (if it's actually a line)
@@ -222,8 +224,14 @@ limitations under the License.
                     currentElm = div
                 }
 
+                // Store where the cursor will need to be
+                const newSelectIndex = currentElm.firstChild.textContent.length
+
+                // If we have text from after the user's initial selection, restore it
+                if (textAfter) currentElm.firstChild.textContent += textAfter
+
                 // Move cursor to the end of the pasted content
-                window.getSelection().collapse(currentElm.firstChild, currentElm.firstChild.textContent.length)
+                window.getSelection().collapse(currentElm.firstChild, newSelectIndex)
             }
         },
     }
