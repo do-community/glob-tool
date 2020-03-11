@@ -193,7 +193,6 @@ limitations under the License.
             },
             paste(e) {
                 e.preventDefault()
-                console.log(e)
 
                 // Get the pasted text and split by new line
                 let pastedText
@@ -256,6 +255,14 @@ limitations under the License.
 
                 // Move cursor to the end of the pasted content
                 window.getSelection().collapse(currentElm.firstChild, newSelectIndex)
+
+                // Scroll the new pasted content into view if it isn't viewable
+                const currentElmTop = currentElm.offsetTop - currentElm.parentElement.offsetTop
+                const currentElmBottom = currentElm.getBoundingClientRect().height + currentElmTop
+                const viewableTop = this.$refs.textarea.scrollTop
+                const viewableBottom = this.$refs.textarea.getBoundingClientRect().height + viewableTop
+                if (currentElmTop < viewableTop || currentElmBottom  > viewableBottom)
+                    this.$refs.textarea.scrollTop = currentElmTop
 
                 // We're done, so run a check
                 this.test()
