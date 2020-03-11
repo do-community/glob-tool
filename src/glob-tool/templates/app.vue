@@ -53,7 +53,7 @@ limitations under the License.
                 <br /><small>{{ i18n.templates.app.testsSubtitle }}</small>
             </h2>
             <div class="input-container">
-                <div ref="textarea" class="textarea input" contenteditable="true" @keyup="test">
+                <div ref="textarea" class="textarea input" contenteditable="true" @keyup="test" @paste="paste">
                     <div>/hello/world.js</div>
                     <div>/test/some/globs</div>
                 </div>
@@ -136,6 +136,17 @@ limitations under the License.
                 // Ensure it isn't empty
                 this.empty()
 
+                // Ensure we don't have bugged text
+                for (const child of this.$refs.textarea.childNodes) {
+                    if (child.nodeName === '#text') {
+                        const div = document.createElement("div")
+                        const text = document.createTextNode(child.textContent)
+                        div.appendChild(text)
+                        this.$refs.textarea.insertBefore(div, child.nextSibling)
+                        child.parentElement.removeChild(child)
+                    }
+                }
+
                 // Get the data
                 const glob = this.$refs.input.value
                 const children = Array.from(this.$refs.textarea.children)
@@ -158,6 +169,61 @@ limitations under the License.
                         }
                     }
                 })
+            },
+            paste(e) {
+                e.preventDefault()
+
+                // Get the pasted text and split by new line
+                let pastedText
+                if (window.clipboardData && window.clipboardData.getData) { // IE
+                    pastedText = window.clipboardData.getData('Text')
+                } else if (e.clipboardData && e.clipboardData.getData) {
+                    pastedText = e.clipboardData.getData('text/plain')
+                }
+                pastedText = pastedText.split('\n')
+                if (!pastedText.length) return
+
+                // Attempt to determine where the user currently is
+                // If we can't assume end of text area
+                const select = window.getSelection()
+                let currentElm = select.focusNode
+                if (currentElm.nodeName.toLowerCase() !== 'div') currentElm = currentElm.parentElement
+                if (currentElm.parentElement !== this.$refs.textarea) currentElm = this.$refs.textarea.lastElementChild
+
+                // TODO: if selected range, remove that first
+
+                // TODO: collapse selection and get position, split current there and insert before second part of split
+                if (currentElm === select.focusNode || currentElm.firstChild == select.focusNode) {
+                    select.collapseToStart()
+                    const index = select.getRangeAt(0).startOffset
+                    const textBefore = select.focusNode.textContent.slice(0, index)
+                    const textAfter = select.focusNode.textContent.slice(index)
+                    console.log(textBefore, textAfter)
+                }
+
+                // Append first to current line (if it's actually a line)
+                if (currentElm.nodeName.toLowerCase() === 'div') {
+                    // Remove the br added to an otherwise empty line
+                    if (currentElm.textContent === '' &&
+                        currentElm.firstChild &&
+                        currentElm.firstChild.nodeName.toLowerCase() === 'br') {
+                        currentElm.removeChild(currentElm.firstChild)
+                    }
+                    // Add the text
+                    currentElm.innerText += pastedText.pop()
+                }
+
+                // Insert the rest on new lines after the current
+                for (const line of pastedText) {
+                    const div = document.createElement("div")
+                    const text = document.createTextNode(line)
+                    div.appendChild(text)
+                    this.$refs.textarea.insertBefore(div, currentElm.nextSibling)
+                    currentElm = div
+                }
+
+                // Move cursor to the end of the pasted content
+                window.getSelection().collapse(currentElm.firstChild, currentElm.firstChild.textContent.length)
             }
         },
     }
