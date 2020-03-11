@@ -125,6 +125,14 @@ limitations under the License.
                 window.history.pushState({}, "", `?${queryString.stringify(parsed)}`)
             },
             empty() {
+                // Ensure no lost brs
+                for (const child of this.$refs.textarea.children) {
+                    if (child.nodeName.toLowerCase() === 'br') {
+                        this.$refs.textarea.removeChild(child)
+                    }
+                }
+
+                // If we're empty, create a blank child
                 if (this.$refs.textarea.children.length === 0) {
                     const div = document.createElement("div")
                     const br = document.createElement("br")
@@ -132,11 +140,8 @@ limitations under the License.
                     this.$refs.textarea.appendChild(div)
                 }
             },
-            test() {
-                // Ensure it isn't empty
-                this.empty()
-
-                // Ensure we don't have bugged text
+            standard() {
+                // If we have any text directly in the parent, move it to a child div
                 for (const child of this.$refs.textarea.childNodes) {
                     if (child.nodeName === '#text') {
                         const div = document.createElement("div")
@@ -146,6 +151,22 @@ limitations under the License.
                         child.parentElement.removeChild(child)
                     }
                 }
+            },
+            focus() {
+                // If we're focused in the textarea, focus on first div instead
+                const select = window.getSelection()
+                if (select.isCollapsed && select.focusNode == this.$refs.textarea)
+                    select.collapse(this.$refs.textarea.children[0])
+            },
+            test() {
+                // Ensure we don't have bugged text
+                this.standard()
+
+                // Ensure we have a valid empty state if empty
+                this.empty()
+
+                // Make sure we're now actually focused in the first div and not the parent
+                this.focus()
 
                 // Get the data
                 const glob = this.$refs.input.value
@@ -172,6 +193,7 @@ limitations under the License.
             },
             paste(e) {
                 e.preventDefault()
+                console.log(e)
 
                 // Get the pasted text and split by new line
                 let pastedText
@@ -234,6 +256,9 @@ limitations under the License.
 
                 // Move cursor to the end of the pasted content
                 window.getSelection().collapse(currentElm.firstChild, newSelectIndex)
+
+                // We're done, so run a check
+                this.test()
             }
         },
     }
