@@ -127,7 +127,7 @@ limitations under the License.
             empty() {
                 // Ensure no lost brs
                 for (const child of this.$refs.textarea.children) {
-                    if (child.nodeName.toLowerCase() === 'br') {
+                    if (child.nodeName.toLowerCase() === "br") {
                         this.$refs.textarea.removeChild(child)
                     }
                 }
@@ -143,7 +143,7 @@ limitations under the License.
             standard() {
                 // If we have any text directly in the parent, move it to a child div
                 for (const child of this.$refs.textarea.childNodes) {
-                    if (child.nodeName === '#text') {
+                    if (child.nodeName === "#text") {
                         const div = document.createElement("div")
                         const text = document.createTextNode(child.textContent)
                         div.appendChild(text)
@@ -197,18 +197,18 @@ limitations under the License.
                 // Get the pasted text and split by new line
                 let pastedText
                 if (window.clipboardData && window.clipboardData.getData) { // IE
-                    pastedText = window.clipboardData.getData('Text')
+                    pastedText = window.clipboardData.getData("Text")
                 } else if (e.clipboardData && e.clipboardData.getData) {
-                    pastedText = e.clipboardData.getData('text/plain')
+                    pastedText = e.clipboardData.getData("text/plain")
                 }
-                pastedText = pastedText.split('\n')
+                pastedText = pastedText.split("\n")
                 if (!pastedText.length) return
 
                 // Attempt to determine where the user currently is
                 // If we can't, assume end of text area
                 const select = window.getSelection()
                 let currentElm = select.focusNode
-                if (currentElm.nodeName.toLowerCase() !== 'div') currentElm = currentElm.parentElement
+                if (currentElm.nodeName.toLowerCase() !== "div") currentElm = currentElm.parentElement
                 if (currentElm.parentElement !== this.$refs.textarea) currentElm = this.$refs.textarea.lastElementChild
 
                 // If the user has selected a range, delete it as we'll be replacing it
@@ -227,11 +227,11 @@ limitations under the License.
                 }
 
                 // Append first to current line (if it's actually a line)
-                if (currentElm.nodeName.toLowerCase() === 'div') {
+                if (currentElm.nodeName.toLowerCase() === "div") {
                     // Remove the br added to an otherwise empty line
-                    if (currentElm.textContent === '' &&
+                    if (currentElm.textContent === "" &&
                         currentElm.firstChild &&
-                        currentElm.firstChild.nodeName.toLowerCase() === 'br') {
+                        currentElm.firstChild.nodeName.toLowerCase() === "br") {
                         currentElm.removeChild(currentElm.firstChild)
                     }
                     // Add the text

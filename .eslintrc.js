@@ -11,6 +11,7 @@ module.exports =  {
   rules:  {
     "linebreak-style": ["error", "unix"],
     semi: ["error", "never"],
+    quotes: ["error", "double"],
     "@typescript-eslint/no-non-null-assertion": 0,
     "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/explicit-function-return-type": 0,
