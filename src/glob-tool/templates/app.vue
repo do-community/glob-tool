@@ -1,5 +1,5 @@
 <!--
-Copyright 2019 DigitalOcean
+Copyright 2020 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -60,12 +60,18 @@ limitations under the License.
                      @keyup="up"
                      @paste="paste"
                 >
+                    <div>// This should match as it ends with '.js'</div>
                     <div>/hello/world.js</div>
+                    <div>// This won't match!</div>
                     <div>/test/some/globs</div>
                 </div>
             </div>
 
-            <br />
+            <PrettyCheck v-model="commentsEnabled" class="p-default p-curve p-fill p-icon">
+                <i slot="extra" class="icon fas fa-check"></i>
+                {{ i18n.templates.app.comments }}
+            </PrettyCheck>
+
             <Help></Help>
         </div>
 
@@ -76,6 +82,7 @@ limitations under the License.
 <script>
     import minimatch from "minimatch"
     import queryString from "query-string"
+    import PrettyCheck from "pretty-checkbox-vue/check"
     import i18n from "../i18n"
     import Header from "do-vue/src/templates/header"
     import Footer from "do-vue/src/templates/footer"
@@ -85,6 +92,7 @@ limitations under the License.
     export default {
         name: "App",
         components: {
+            PrettyCheck,
             Header,
             Footer,
             Examples,
@@ -94,11 +102,16 @@ limitations under the License.
             return {
                 i18n,
                 shiftActive: false,
+                commentsEnabled: null,
+            }
+        },
+        watch: {
+            commentsEnabled() {
+                this.test()
             }
         },
         mounted() {
-            this.load()
-            this.test()
+            this.load() // Load any URL data and run an initial test
         },
         methods: {
             setGlob(glob) {
@@ -116,7 +129,13 @@ limitations under the License.
                 })
                 this.test()
             },
+            setComments(comments) {
+                // Explicit false, otherwise true
+                this.$data.commentsEnabled = !(comments.toString().toLowerCase() === "false")
+                this.test()
+            },
             set(glob, tests) {
+                this.$data.commentsEnabled = true
                 this.setGlob(glob)
                 this.setTests(tests)
             },
@@ -124,11 +143,13 @@ limitations under the License.
                 const parsed = queryString.parse(window.location.search)
                 if (parsed.glob) this.setGlob(parsed.glob)
                 if (parsed.tests) this.setTests(parsed.tests)
+                this.setComments(parsed.comments || "true") // Default comments to enabled
             },
             store(glob, tests) {
                 const parsed = queryString.parse(window.location.search)
                 parsed.glob = glob
                 parsed.tests = tests.map(x => x.textContent).filter(x => !!x.trim())
+                if (this.$data.commentsEnabled !== null) parsed.comments = this.$data.commentsEnabled
                 window.history.pushState({}, "", `?${queryString.stringify(parsed)}`)
             },
             empty() {
@@ -184,17 +205,27 @@ limitations under the License.
 
                 // Run the hit/miss check
                 children.forEach(child => {
+                    // Remove all classes to start
+                    child.classList.remove("miss")
+                    child.classList.remove("hit")
+                    child.classList.remove("comment")
+
+                    // If blank, ddo nothing more
                     if (child.textContent.trim() === "") {
-                        child.classList.remove("miss")
-                        child.classList.remove("hit")
+                        return
+                    }
+
+                    // If a comment, add the comment class
+                    if (this.$data.commentsEnabled && child.textContent.trim().startsWith("//")) {
+                        child.classList.add("comment")
+                        return
+                    }
+
+                    // If a match, add hit, else add miss
+                    if (minimatch(child.textContent, glob)) {
+                        child.classList.add("hit")
                     } else {
-                        if (minimatch(child.textContent, glob)) {
-                            child.classList.remove("miss")
-                            child.classList.add("hit")
-                        } else {
-                            child.classList.add("miss")
-                            child.classList.remove("hit")
-                        }
+                        child.classList.add("miss")
                     }
                 })
             },
