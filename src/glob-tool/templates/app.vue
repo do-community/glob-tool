@@ -1,5 +1,5 @@
 <!--
-Copyright 2019 DigitalOcean
+Copyright 2020 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -67,9 +67,9 @@ limitations under the License.
                 </div>
             </div>
 
-            <PrettyCheck class="p-default p-curve p-fill p-icon" v-model="commentsEnabled">
+            <PrettyCheck v-model="commentsEnabled" class="p-default p-curve p-fill p-icon">
                 <i slot="extra" class="icon fas fa-check"></i>
-                Comments enabled? (Start a line with '//' to write a comment when enabled)
+                {{ i18n.templates.app.comments }}
             </PrettyCheck>
 
             <Help></Help>
@@ -105,13 +105,13 @@ limitations under the License.
                 commentsEnabled: null,
             }
         },
-        mounted() {
-            this.load() // Load any URL data and run an initial test
-        },
         watch: {
             commentsEnabled() {
                 this.test()
             }
+        },
+        mounted() {
+            this.load() // Load any URL data and run an initial test
         },
         methods: {
             setGlob(glob) {
@@ -131,10 +131,11 @@ limitations under the License.
             },
             setComments(comments) {
                 // Explicit false, otherwise true
-                this.$data.commentsEnabled = !(comments.toString().toLowerCase() === 'false')
+                this.$data.commentsEnabled = !(comments.toString().toLowerCase() === "false")
                 this.test()
             },
             set(glob, tests) {
+                this.$data.commentsEnabled = true
                 this.setGlob(glob)
                 this.setTests(tests)
             },
@@ -142,7 +143,7 @@ limitations under the License.
                 const parsed = queryString.parse(window.location.search)
                 if (parsed.glob) this.setGlob(parsed.glob)
                 if (parsed.tests) this.setTests(parsed.tests)
-                this.setComments(parsed.comments || 'true') // Default comments to enabled
+                this.setComments(parsed.comments || "true") // Default comments to enabled
             },
             store(glob, tests) {
                 const parsed = queryString.parse(window.location.search)
@@ -215,7 +216,7 @@ limitations under the License.
                     }
 
                     // If a comment, add the comment class
-                    if (this.$data.commentsEnabled && child.textContent.trim().startsWith('//')) {
+                    if (this.$data.commentsEnabled && child.textContent.trim().startsWith("//")) {
                         child.classList.add("comment")
                         return
                     }
