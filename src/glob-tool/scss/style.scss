@@ -47,7 +47,8 @@ $header: #0071fe;
         padding: ($margin / 2) $margin ($margin / 2) $left;
 
         > div {
-          line-height: 1.3;
+          font-size: 16px;
+          line-height: 21px;
           margin-left: -$left;
           padding-left: $left;
           position: relative;
@@ -70,15 +71,23 @@ $header: #0071fe;
             color: $primary;
 
             &::before {
+              color: $primary;
               content: "\f00c";
             }
           }
 
           &.miss {
+            color: $text;
+
             &::before {
               color: $dark-grey;
               content: "\f00d";
             }
+          }
+
+          &.comment {
+            color: $dark-grey;
+            font-size: 14px;
           }
         }
       }

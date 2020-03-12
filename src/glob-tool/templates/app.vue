@@ -184,17 +184,27 @@ limitations under the License.
 
                 // Run the hit/miss check
                 children.forEach(child => {
+                    // Remove all classes to start
+                    child.classList.remove("miss")
+                    child.classList.remove("hit")
+                    child.classList.remove("comment")
+
+                    // If blank, ddo nothing more
                     if (child.textContent.trim() === "") {
-                        child.classList.remove("miss")
-                        child.classList.remove("hit")
+                        return
+                    }
+
+                    // If a comment, add the comment class
+                    if (child.textContent.trim().startsWith('//')) {
+                        child.classList.add("comment")
+                        return
+                    }
+
+                    // If a match, add hit, else add miss
+                    if (minimatch(child.textContent, glob)) {
+                        child.classList.add("hit")
                     } else {
-                        if (minimatch(child.textContent, glob)) {
-                            child.classList.remove("miss")
-                            child.classList.add("hit")
-                        } else {
-                            child.classList.add("miss")
-                            child.classList.remove("hit")
-                        }
+                        child.classList.add("miss")
                     }
                 })
             },
