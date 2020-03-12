@@ -60,12 +60,18 @@ limitations under the License.
                      @keyup="up"
                      @paste="paste"
                 >
+                    <div>// This should match as it ends with '.js'</div>
                     <div>/hello/world.js</div>
+                    <div>// This won't match!</div>
                     <div>/test/some/globs</div>
                 </div>
             </div>
 
-            <br />
+            <PrettyCheck class="p-default p-curve p-fill p-icon" v-model="commentsEnabled">
+                <i slot="extra" class="icon fas fa-check"></i>
+                Comments enabled? (Start a line with '//' to write a comment when enabled)
+            </PrettyCheck>
+
             <Help></Help>
         </div>
 
@@ -76,6 +82,7 @@ limitations under the License.
 <script>
     import minimatch from "minimatch"
     import queryString from "query-string"
+    import PrettyCheck from "pretty-checkbox-vue/check"
     import i18n from "../i18n"
     import Header from "do-vue/src/templates/header"
     import Footer from "do-vue/src/templates/footer"
@@ -85,6 +92,7 @@ limitations under the License.
     export default {
         name: "App",
         components: {
+            PrettyCheck,
             Header,
             Footer,
             Examples,
@@ -94,11 +102,16 @@ limitations under the License.
             return {
                 i18n,
                 shiftActive: false,
+                commentsEnabled: null,
             }
         },
         mounted() {
-            this.load()
-            this.test()
+            this.load() // Load any URL data and run an initial test
+        },
+        watch: {
+            commentsEnabled() {
+                this.test()
+            }
         },
         methods: {
             setGlob(glob) {
@@ -116,6 +129,11 @@ limitations under the License.
                 })
                 this.test()
             },
+            setComments(comments) {
+                // Explicit false, otherwise true
+                this.$data.commentsEnabled = !(comments.toString().toLowerCase() === 'false')
+                this.test()
+            },
             set(glob, tests) {
                 this.setGlob(glob)
                 this.setTests(tests)
@@ -124,11 +142,13 @@ limitations under the License.
                 const parsed = queryString.parse(window.location.search)
                 if (parsed.glob) this.setGlob(parsed.glob)
                 if (parsed.tests) this.setTests(parsed.tests)
+                this.setComments(parsed.comments || 'true') // Default comments to enabled
             },
             store(glob, tests) {
                 const parsed = queryString.parse(window.location.search)
                 parsed.glob = glob
                 parsed.tests = tests.map(x => x.textContent).filter(x => !!x.trim())
+                if (this.$data.commentsEnabled !== null) parsed.comments = this.$data.commentsEnabled
                 window.history.pushState({}, "", `?${queryString.stringify(parsed)}`)
             },
             empty() {
@@ -195,7 +215,7 @@ limitations under the License.
                     }
 
                     // If a comment, add the comment class
-                    if (child.textContent.trim().startsWith('//')) {
+                    if (this.$data.commentsEnabled && child.textContent.trim().startsWith('//')) {
                         child.classList.add("comment")
                         return
                     }

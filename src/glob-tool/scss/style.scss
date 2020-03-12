@@ -18,6 +18,10 @@ $header: #0071fe;
 @import "~do-bulma/src/style";
 
 .do-bulma {
+  $pretty--color-default: $primary;
+  $pretty--color-dark: $primary;
+  @import "~pretty-checkbox/src/pretty-checkbox";
+
   a.jump-link {
     text-decoration: none;
   }
@@ -88,6 +92,32 @@ $header: #0071fe;
           &.comment {
             color: $dark-grey;
             font-size: 14px;
+          }
+        }
+      }
+    }
+
+    .pretty {
+      &.p-icon {
+        font-size: 18px;
+
+        .state {
+          .icon {
+            &::before {
+              color: $panel;
+              font-size: 14px;
+            }
+          }
+
+          label {
+            color: $dark-grey;
+            font-size: 14px;
+            padding-left: $margin / 2;
+
+            &::before,
+            &::after {
+              font-size: 18px;
+            }
           }
         }
       }
