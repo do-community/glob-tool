@@ -67,12 +67,17 @@ limitations under the License.
                 </div>
             </div>
 
-            <PrettyCheck v-model="commentsEnabled" class="p-default p-curve p-fill p-icon">
-                <i slot="extra" class="icon fas fa-check"></i>
-                {{ i18n.templates.app.comments }}
-            </PrettyCheck>
+            <div class="actions-container">
+                <PrettyCheck v-model="commentsEnabled" class="p-default p-curve p-fill p-icon">
+                    <i slot="extra" class="icon fas fa-check"></i>
+                    {{ i18n.templates.app.comments }}
+                </PrettyCheck>
+
+                <a class="button is-primary is-small" @click="showTree">Import tree command output</a>
+            </div>
 
             <Help></Help>
+            <Tree ref="tree"></Tree>
         </div>
 
         <Footer :text="i18n.templates.app.oss"></Footer>
@@ -88,6 +93,7 @@ limitations under the License.
     import Footer from "do-vue/src/templates/footer"
     import Examples from "./examples"
     import Help from "./help"
+    import Tree from "./tree"
 
     export default {
         name: "App",
@@ -97,6 +103,7 @@ limitations under the License.
             Footer,
             Examples,
             Help,
+            Tree,
         },
         data() {
             return {
@@ -321,7 +328,10 @@ limitations under the License.
 
                 // We're done, so run a check
                 this.test()
-            }
+            },
+            showTree() {
+                this.$refs.tree.open()
+            },
         },
     }
 </script>

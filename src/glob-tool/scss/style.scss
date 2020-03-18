@@ -97,26 +97,33 @@ $header: #0071fe;
       }
     }
 
-    .pretty {
-      &.p-icon {
-        font-size: 18px;
+    .actions-container {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
 
-        .state {
-          .icon {
-            &::before {
-              color: $panel;
-              font-size: 14px;
+      .pretty {
+        &.p-icon {
+          font-size: 18px;
+
+          .state {
+            .icon {
+              &::before {
+                color: $panel;
+                font-size: 14px;
+              }
             }
-          }
 
-          label {
-            color: $dark-grey;
-            font-size: 14px;
-            padding-left: $margin / 2;
+            label {
+              color: $dark-grey;
+              font-size: 14px;
+              padding-left: $margin / 2;
 
-            &::before,
-            &::after {
-              font-size: 18px;
+              &::before,
+              &::after {
+                font-size: 18px;
+              }
             }
           }
         }
@@ -156,6 +163,14 @@ $header: #0071fe;
           margin-top: $margin / 2;
         }
       }
+    }
+  }
+
+  .tree-input {
+    padding: 0;
+
+    textarea {
+      background: transparent;
     }
   }
 }
