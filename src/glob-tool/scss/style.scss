@@ -166,11 +166,32 @@ $header: #0071fe;
     }
   }
 
-  .tree-input {
-    padding: 0;
+  .tree-import {
+    .modal-card {
+      @extend .container;
 
-    textarea {
-      background: transparent;
+      flex-grow: 0;
+      width: 100%;
+
+      .modal-card-body {
+        .columns {
+          margin: 0;
+
+          .title {
+            small {
+              font-size: .65em;
+            }
+          }
+
+          pre {
+            padding: 0;
+
+            textarea {
+              background: transparent;
+            }
+          }
+        }
+      }
     }
   }
 }

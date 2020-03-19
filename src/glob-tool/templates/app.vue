@@ -77,7 +77,7 @@ limitations under the License.
             </div>
 
             <Help></Help>
-            <Tree ref="tree"></Tree>
+            <Tree ref="tree" @save="addTests"></Tree>
         </div>
 
         <Footer :text="i18n.templates.app.oss"></Footer>
@@ -332,6 +332,18 @@ limitations under the License.
             showTree() {
                 this.$refs.tree.open()
             },
+            addTests(tests) {
+                // Add each of the new test strings
+                for (const line of tests) {
+                    const div = document.createElement("div")
+                    const text = document.createTextNode(line)
+                    div.appendChild(text)
+                    this.$refs.textarea.appendChild(div)
+                }
+
+                // Run a check
+                this.test()
+            }
         },
     }
 </script>
