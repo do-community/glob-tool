@@ -16,46 +16,48 @@ limitations under the License.
 
 <template>
     <Modal ref="modal" title="Import tree command" class="tree-import">
-            <div class="columns">
-                <div class="column">
-                    <h3 class="title is-4">
-                        Output of tree command:
-                        <br/>
-                        <small>
-                            Paste the output of the unix <code class="slim">tree</code> command here to import it as
-                            test strings.
-                        </small>
-                    </h3>
-                    <pre><textarea ref="input" v-model.trim="input" :placeholder="defaultTree"></textarea></pre>
+        <div class="columns">
+            <div class="column">
+                <h3 class="title is-4">
+                    Output of tree command:
+                    <br />
+                    <small>
+                        Paste the output of the unix <code class="slim">tree</code> command here to import it as
+                        test strings.
+                    </small>
+                </h3>
+                <pre><textarea ref="input" v-model.trim="input" :placeholder="defaultTree"></textarea></pre>
 
-                    <h3 class="title is-4">
-                        String to trim from start of files:
-                        <br/>
-                        <small>
-                            Use this to trim a set string from the start of each line, such as the base folder.
-                        </small>
-                    </h3>
-                    <input ref="trim" class="input" type="text" placeholder="./" v-model.trim="trim" />
-                </div>
-
-                <div class="column">
-                    <h3 class="title is-4">Parsed files from tree:</h3>
-                    <p v-if="error">
-                        Sorry, an error occurred when trying to parse your input.
-                    </p>
-                    <p v-else-if="!parsed.length">
-                        No files could be found in your provided input.
-                    </p>
-                    <template v-else>
-                        <ul>
-                            <li v-for="file in parsed">
-                                {{ file }}
-                            </li>
-                        </ul>
-                        <a class="button is-primary" @click="save">Import as test strings</a>
-                    </template>
-                </div>
+                <h3 class="title is-4">
+                    String to trim from start of files:
+                    <br />
+                    <small>
+                        Use this to trim a set string from the start of each line, such as the base folder.
+                    </small>
+                </h3>
+                <input ref="trim" v-model.trim="trim" class="input" type="text" placeholder="./" />
             </div>
+
+            <div class="column">
+                <h3 class="title is-4">
+                    Parsed files from tree:
+                </h3>
+                <p v-if="error">
+                    Sorry, an error occurred when trying to parse your input.
+                </p>
+                <p v-else-if="!parsed.length">
+                    No files could be found in your provided input.
+                </p>
+                <template v-else>
+                    <ul>
+                        <li v-for="file in parsed">
+                            {{ file }}
+                        </li>
+                    </ul>
+                    <a class="button is-primary" @click="save">Import as test strings</a>
+                </template>
+            </div>
+        </div>
     </Modal>
 </template>
 
@@ -73,7 +75,7 @@ limitations under the License.
             return {
                 defaultTree,
                 input: defaultTree,
-                trim: './',
+                trim: "./",
                 parsed: [],
                 error: false,
             }
