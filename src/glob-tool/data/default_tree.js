@@ -8,5 +8,5 @@ module.exports = `
     ├── index.js
     └── app.js
 
-1 directory, 5 files
+2 directories, 5 files
 `.trim();
