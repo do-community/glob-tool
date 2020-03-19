@@ -60,19 +60,24 @@ limitations under the License.
                      @keyup="up"
                      @paste="paste"
                 >
-                    <div>// This should match as it ends with '.js'</div>
+                    <div>// This will match as it ends with '.js'</div>
                     <div>/hello/world.js</div>
                     <div>// This won't match!</div>
                     <div>/test/some/globs</div>
                 </div>
             </div>
 
-            <PrettyCheck v-model="commentsEnabled" class="p-default p-curve p-fill p-icon">
-                <i slot="extra" class="icon fas fa-check"></i>
-                {{ i18n.templates.app.comments }}
-            </PrettyCheck>
+            <div class="actions-container">
+                <PrettyCheck v-model="commentsEnabled" class="p-default p-curve p-fill p-icon">
+                    <i slot="extra" class="icon fas fa-check"></i>
+                    {{ i18n.templates.app.comments }}
+                </PrettyCheck>
+
+                <a class="button is-primary is-small" @click="showTree">Import tree command output</a>
+            </div>
 
             <Help></Help>
+            <Tree ref="tree" @save="addTree"></Tree>
         </div>
 
         <Footer :text="i18n.templates.app.oss"></Footer>
@@ -88,6 +93,7 @@ limitations under the License.
     import Footer from "do-vue/src/templates/footer"
     import Examples from "./examples"
     import Help from "./help"
+    import Tree from "./tree"
 
     export default {
         name: "App",
@@ -97,6 +103,7 @@ limitations under the License.
             Footer,
             Examples,
             Help,
+            Tree,
         },
         data() {
             return {
@@ -320,6 +327,24 @@ limitations under the License.
                     this.$refs.textarea.scrollTop = currentElmTop
 
                 // We're done, so run a check
+                this.test()
+            },
+            showTree() {
+                this.$refs.tree.open()
+            },
+            addTree(tests) {
+                // If comments enabled, leave a comment
+                if (this.$data.commentsEnabled) tests.unshift("// Imported from tree command")
+
+                // Add each of the new test strings
+                for (const line of tests) {
+                    const div = document.createElement("div")
+                    const text = document.createTextNode(line)
+                    div.appendChild(text)
+                    this.$refs.textarea.appendChild(div)
+                }
+
+                // Run a check
                 this.test()
             }
         },

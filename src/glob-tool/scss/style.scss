@@ -97,26 +97,33 @@ $header: #0071fe;
       }
     }
 
-    .pretty {
-      &.p-icon {
-        font-size: 18px;
+    .actions-container {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
 
-        .state {
-          .icon {
-            &::before {
-              color: $panel;
-              font-size: 14px;
+      .pretty {
+        &.p-icon {
+          font-size: 18px;
+
+          .state {
+            .icon {
+              &::before {
+                color: $panel;
+                font-size: 14px;
+              }
             }
-          }
 
-          label {
-            color: $dark-grey;
-            font-size: 14px;
-            padding-left: $margin / 2;
+            label {
+              color: $dark-grey;
+              font-size: 14px;
+              padding-left: $margin / 2;
 
-            &::before,
-            &::after {
-              font-size: 18px;
+              &::before,
+              &::after {
+                font-size: 18px;
+              }
             }
           }
         }
@@ -154,6 +161,35 @@ $header: #0071fe;
 
         + li {
           margin-top: $margin / 2;
+        }
+      }
+    }
+  }
+
+  .tree-import {
+    .modal-card {
+      @extend .container;
+
+      flex-grow: 0;
+      width: 100%;
+
+      .modal-card-body {
+        .columns {
+          margin: 0;
+
+          .title {
+            small {
+              font-size: .65em;
+            }
+          }
+
+          pre {
+            padding: 0;
+
+            textarea {
+              background: transparent;
+            }
+          }
         }
       }
     }
