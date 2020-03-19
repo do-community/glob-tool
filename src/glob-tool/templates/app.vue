@@ -60,7 +60,7 @@ limitations under the License.
                      @keyup="up"
                      @paste="paste"
                 >
-                    <div>// This should match as it ends with '.js'</div>
+                    <div>// This will match as it ends with '.js'</div>
                     <div>/hello/world.js</div>
                     <div>// This won't match!</div>
                     <div>/test/some/globs</div>
@@ -77,7 +77,7 @@ limitations under the License.
             </div>
 
             <Help></Help>
-            <Tree ref="tree" @save="addTests"></Tree>
+            <Tree ref="tree" @save="addTree"></Tree>
         </div>
 
         <Footer :text="i18n.templates.app.oss"></Footer>
@@ -332,7 +332,10 @@ limitations under the License.
             showTree() {
                 this.$refs.tree.open()
             },
-            addTests(tests) {
+            addTree(tests) {
+                // If comments enabled, leave a comment
+                if (this.$data.commentsEnabled) tests.unshift('// Imported from tree command')
+
                 // Add each of the new test strings
                 for (const line of tests) {
                     const div = document.createElement("div")
