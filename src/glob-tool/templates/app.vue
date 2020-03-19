@@ -334,7 +334,7 @@ limitations under the License.
             },
             addTree(tests) {
                 // If comments enabled, leave a comment
-                if (this.$data.commentsEnabled) tests.unshift('// Imported from tree command')
+                if (this.$data.commentsEnabled) tests.unshift("// Imported from tree command")
 
                 // Add each of the new test strings
                 for (const line of tests) {
