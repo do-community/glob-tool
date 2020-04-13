@@ -31,31 +31,31 @@
   },
   "homepage": "https://github.com/do-community/glob-tool#readme",
   "dependencies": {
-    "@babel/runtime": "^7.5.5",
+    "@babel/runtime": "^7.9.2",
     "abortcontroller-polyfill": "^1.4.0",
     "babel-polyfill": "^6.26.0",
     "do-bulma": "git+https://github.com/do-community/do-bulma.git",
     "do-vue": "git+https://github.com/do-community/do-vue.git",
     "parcel-bundler": "^1.12.4",
     "pretty-checkbox-vue": "^1.1.9",
-    "query-string": "^6.8.3",
-    "tree-parse": "0.0.4",
-    "vue": "^2.6.10",
+    "query-string": "^6.12.1",
+    "tree-parse": "0.0.5",
+    "vue": "^2.6.11",
     "vue-hot-reload-api": "^2.3.3"
   },
   "devDependencies": {
-    "@babel/plugin-transform-runtime": "^7.5.5",
+    "@babel/plugin-transform-runtime": "^7.9.0",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
-    "@vue/component-compiler-utils": "^3.0.0",
-    "copyfiles": "^2.1.1",
+    "@vue/component-compiler-utils": "^3.1.2",
+    "copyfiles": "^2.2.0",
     "eslint": "^6.8.0",
     "eslint-plugin-vue": "^5.2.3",
     "posthtml": "^0.11.4",
     "posthtml-extend": "^0.3.0",
-    "sass": "^1.22.9",
+    "sass": "^1.26.3",
     "sass-lint": "^1.13.1",
-    "typescript": "^3.5.3",
-    "vue-template-compiler": "^2.6.10"
+    "typescript": "^3.8.3",
+    "vue-template-compiler": "^2.6.11"
   }
 }
