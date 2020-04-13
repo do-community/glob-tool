@@ -1,12 +1,13 @@
 module.exports = `
 .
 ├── README.md
-├── index.js
-└── src
-    ├── test
-    │   └── test.js
-    ├── index.js
-    └── app.js
+├── package.json
+├── src
+│   ├── app.js
+│   ├── util.js
+│   └── test
+│       └── test.js
+└── index.js
 
-2 directories, 5 files
+2 directories, 6 files
 `.trim();
