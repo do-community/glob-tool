@@ -15,32 +15,18 @@ limitations under the License.
 -->
 
 <template>
-    <Modal ref="modal" title="Import tree command" class="tree-import">
+    <Modal ref="modal" title="Import NPM package" class="tree-import">
         <div class="columns">
             <div class="column">
                 <h3 class="title is-4">
-                    Output of tree command:
-                    <br />
-                    <small>
-                        Paste the output of the unix <code class="slim">tree</code> command here to import it as
-                        test strings.
-                    </small>
+                    NPM package name:
                 </h3>
-                <pre><textarea ref="input" v-model.trim="input" :placeholder="defaultTree"></textarea></pre>
-
-                <h3 class="title is-4">
-                    String to trim from start of files:
-                    <br />
-                    <small>
-                        Use this to trim a set string from the start of each line, such as the base folder.
-                    </small>
-                </h3>
-                <input ref="trim" v-model.trim="trim" class="input" type="text" placeholder="./" />
+                <input ref="package" v-model.trim="package" class="input" type="text" placeholder="vue" />
             </div>
 
             <div class="column">
                 <h3 class="title is-4">
-                    Parsed files from tree:
+                    Files in package:
                 </h3>
                 <p v-if="error">
                     Sorry, an error occurred when trying to parse your input.
@@ -62,20 +48,20 @@ limitations under the License.
 </template>
 
 <script>
-    import { parse, files } from "tree-parse"
+    import { inflate } from "pako";
+    import { Readable } from "stream";
+    import fetch from "node-fetch";
+    import untarToMemory from "untar-memory";
     import Modal from "do-vue/src/templates/modal"
-    import defaultTree from "../data/default_tree"
 
     export default {
-        name: "Tree",
+        name: "Package",
         components: {
             Modal
         },
         data() {
             return {
-                defaultTree,
-                input: defaultTree,
-                trim: "./",
+                package: "vue",
                 parsed: [],
                 error: false,
             }
@@ -89,15 +75,39 @@ limitations under the License.
             }
         },
         methods: {
-            update() {
+            walk(fs, dir) {
+                const files = fs.readdirSync(dir);
+                const results = [];
+                files.forEach(file => {
+                    if (fs.statSync(dir + file).isDirectory()) {
+                        results.push(...this.walk(fs, dir + file + '/'))
+                    } else {
+                        results.push(dir + file);
+                    }
+                });
+                return results;
+            },
+            async update() {
                 try {
-                    this.$data.parsed = files(parse(this.$data.input)).map(x => {
-                        const trim = this.$data.trim.trim()
-                        if (x.startsWith(trim)) return x.substr(trim.length)
-                        return x
-                    })
-                    this.$data.error = false
-                } catch (_) {
+                    // Get the tarball URL
+                    const data = await (await fetch(`https://cors-anywhere.herokuapp.com/https://registry.npmjs.com/${this.$data.package}`)).json();
+                    const tarUrl = data.versions[data['dist-tags'].latest].dist.tarball;
+
+                    // Get the tarball contents
+                    const tarRes = await fetch(`https://cors-anywhere.herokuapp.com/${tarUrl}`);
+                    const tar = inflate(await tarRes.arrayBuffer());
+
+                    // Parse the tarball to an fs
+                    const tarStream = new Readable();
+                    tarStream.push(tar);
+                    tarStream.push(null);
+                    const memFs = await untarToMemory(tarStream);
+
+                    // Get all files in fs
+                    const files = this.walk(memFs, '/');
+                    this.$data.parsed = files;
+                } catch (e) {
+                    console.error(e);
                     this.$data.parsed = []
                     this.$data.error = true
                 }
@@ -112,7 +122,7 @@ limitations under the License.
                 })
             },
             save() {
-                this.$emit("save", this.$data.parsed, 'tree command')
+                this.$emit("save", this.$data.parsed, 'NPM package')
                 this.$refs.modal.close()
             },
         }

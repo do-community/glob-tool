@@ -36,10 +36,13 @@
     "babel-polyfill": "^6.26.0",
     "do-bulma": "git+https://github.com/do-community/do-bulma.git",
     "do-vue": "git+https://github.com/do-community/do-vue.git",
+    "node-fetch": "^2.6.0",
+    "pako": "^1.0.11",
     "parcel-bundler": "^1.12.4",
     "pretty-checkbox-vue": "^1.1.9",
     "query-string": "^6.12.1",
     "tree-parse": "0.0.5",
+    "untar-memory": "^1.2.0",
     "vue": "^2.6.11",
     "vue-hot-reload-api": "^2.3.3"
   },

@@ -73,11 +73,13 @@ limitations under the License.
                     {{ i18n.templates.app.comments }}
                 </PrettyCheck>
 
-                <a class="button is-primary is-small" @click="showTree">Import tree command output</a>
+                <a class="button is-primary is-small" @click="showTree">Import tree command</a>
+                <a class="button is-primary is-small" @click="showPackage">Import NPM package</a>
             </div>
 
             <Help></Help>
-            <Tree ref="tree" @save="addTree"></Tree>
+            <Tree ref="tree" @save="addImport"></Tree>
+            <Package ref="package" @save="addImport"></Package>
         </div>
 
         <Footer :text="i18n.templates.app.oss"></Footer>
@@ -94,6 +96,7 @@ limitations under the License.
     import Examples from "./examples"
     import Help from "./help"
     import Tree from "./tree"
+    import Package from "./package"
 
     export default {
         name: "App",
@@ -104,6 +107,7 @@ limitations under the License.
             Examples,
             Help,
             Tree,
+            Package,
         },
         data() {
             return {
@@ -332,9 +336,12 @@ limitations under the License.
             showTree() {
                 this.$refs.tree.open()
             },
-            addTree(tests) {
+            showPackage() {
+                this.$refs.package.open()
+            },
+            addImport(tests, type) {
                 // If comments enabled, leave a comment
-                if (this.$data.commentsEnabled) tests.unshift("// Imported from tree command")
+                if (this.$data.commentsEnabled) tests.unshift(`// Imported from ${type}`)
 
                 // Add each of the new test strings
                 for (const line of tests) {
@@ -346,7 +353,7 @@ limitations under the License.
 
                 // Run a check
                 this.test()
-            }
+            },
         },
     }
 </script>
