@@ -112,7 +112,7 @@ limitations under the License.
                 })
             },
             save() {
-                this.$emit("save", this.$data.parsed, 'tree command')
+                this.$emit("save", this.$data.parsed, "tree command")
                 this.$refs.modal.close()
             },
         }

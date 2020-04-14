@@ -22,19 +22,21 @@ limitations under the License.
                     NPM package name:
                 </h3>
                 <div class="input-container">
-                    <i class="fas fa-circle-notch fa-spin" v-if="updating"></i>
-                    <i class="fas fa-box-open" v-else></i>
+                    <i v-if="updating" class="fas fa-circle-notch fa-spin"></i>
+                    <i v-else class="fas fa-box-open"></i>
                     <input ref="package"
                            v-model.trim.lazy="package"
                            class="input"
                            type="text"
                            placeholder="vue"
-                           :disabled="updating" />
+                           :disabled="updating"
+                    />
                 </div>
 
-                <a class="button is-primary"
+                <a v-if="!updating && !error && package.length && parsed.length"
+                   class="button is-primary"
                    @click="save"
-                   v-if="!updating && !error && package.length && parsed.length">
+                >
                     Import files as test strings
                 </a>
             </div>
@@ -68,10 +70,10 @@ limitations under the License.
 </template>
 
 <script>
-    import { inflate } from "pako";
-    import { Readable } from "stream";
-    import fetch from "node-fetch";
-    import untarToMemory from "untar-memory";
+    import { inflate } from "pako"
+    import { Readable } from "stream"
+    import fetch from "node-fetch"
+    import untarToMemory from "untar-memory"
     import Modal from "do-vue/src/templates/modal"
 
     export default {
@@ -89,46 +91,46 @@ limitations under the License.
         },
         watch: {
             package() {
-                this.$data.updating = true;
+                this.$data.updating = true
                 this.update()
             },
         },
         methods: {
             walk(fs, dir) {
-                const files = fs.readdirSync(dir);
-                const results = [];
+                const files = fs.readdirSync(dir)
+                const results = []
                 files.forEach(file => {
                     if (fs.statSync(dir + file).isDirectory()) {
-                        results.push(...this.walk(fs, dir + file + '/'))
+                        results.push(...this.walk(fs, dir + file + "/"))
                     } else {
-                        results.push(dir + file);
+                        results.push(dir + file)
                     }
-                });
-                return results;
+                })
+                return results
             },
             async update() {
-                if (!this.$data.package.length) return;
+                if (!this.$data.package.length) return
 
                 try {
                     // Get the tarball URL
-                    const data = await (await fetch(`https://cors-anywhere.herokuapp.com/https://registry.npmjs.com/${this.$data.package}`)).json();
-                    const tarUrl = data.versions[data['dist-tags'].latest].dist.tarball;
+                    const data = await (await fetch(`https://cors-anywhere.herokuapp.com/https://registry.npmjs.com/${this.$data.package}`)).json()
+                    const tarUrl = data.versions[data["dist-tags"].latest].dist.tarball
 
                     // Get the tarball contents
-                    const tarRes = await fetch(`https://cors-anywhere.herokuapp.com/${tarUrl}`);
-                    const tar = inflate(await tarRes.arrayBuffer());
+                    const tarRes = await fetch(`https://cors-anywhere.herokuapp.com/${tarUrl}`)
+                    const tar = inflate(await tarRes.arrayBuffer())
 
                     // Parse the tarball to an fs
-                    const tarStream = new Readable();
-                    tarStream.push(tar);
-                    tarStream.push(null);
-                    const memFs = await untarToMemory(tarStream);
+                    const tarStream = new Readable()
+                    tarStream.push(tar)
+                    tarStream.push(null)
+                    const memFs = await untarToMemory(tarStream)
 
                     // Get all files in fs
-                    this.$data.parsed = this.walk(memFs, '/').map(x => x.substr('/package/'.length));
+                    this.$data.parsed = this.walk(memFs, "/").map(x => x.substr("/package/".length))
                     this.$data.error = false
                 } catch (e) {
-                    console.error(e);
+                    console.error(e)
                     this.$data.parsed = []
                     this.$data.error = true
                 }
