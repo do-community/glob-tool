@@ -73,8 +73,10 @@ limitations under the License.
                     {{ i18n.templates.app.comments }}
                 </PrettyCheck>
 
-                <a class="button is-primary is-small" @click="showTree">Import tree command</a>
-                <a class="button is-primary is-small" @click="showPackage">Import NPM package</a>
+                <div>
+                    <a class="button is-primary is-small" @click="showTree">Import tree command</a>
+                    <a class="button is-primary is-small" @click="showPackage">Import NPM package</a>
+                </div>
             </div>
 
             <Help></Help>

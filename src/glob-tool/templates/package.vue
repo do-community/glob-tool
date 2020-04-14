@@ -15,24 +15,45 @@ limitations under the License.
 -->
 
 <template>
-    <Modal ref="modal" title="Import NPM package" class="tree-import">
+    <Modal ref="modal" title="Import NPM package" class="import-modal">
         <div class="columns">
             <div class="column">
                 <h3 class="title is-4">
                     NPM package name:
                 </h3>
-                <input ref="package" v-model.trim="package" class="input" type="text" placeholder="vue" />
+                <div class="input-container">
+                    <i class="fas fa-circle-notch fa-spin" v-if="updating"></i>
+                    <i class="fas fa-box-open" v-else></i>
+                    <input ref="package"
+                           v-model.trim.lazy="package"
+                           class="input"
+                           type="text"
+                           placeholder="vue"
+                           :disabled="updating" />
+                </div>
+
+                <a class="button is-primary"
+                   @click="save"
+                   v-if="!updating && !error && package.length && parsed.length">
+                    Import files as test strings
+                </a>
             </div>
 
             <div class="column">
                 <h3 class="title is-4">
                     Files in package:
                 </h3>
-                <p v-if="error">
-                    Sorry, an error occurred when trying to parse your input.
+                <p v-if="updating">
+                    Loading files from NPM package...
+                </p>
+                <p v-else-if="error">
+                    Sorry, an error occurred when trying to load files from the NPM package.
+                </p>
+                <p v-else-if="!package.length">
+                    Please provide an NPM package name to begin.
                 </p>
                 <p v-else-if="!parsed.length">
-                    No files could be found in your provided input.
+                    No files could be found in the NPM package provided.
                 </p>
                 <template v-else>
                     <ul>
@@ -40,7 +61,6 @@ limitations under the License.
                             {{ file }}
                         </li>
                     </ul>
-                    <a class="button is-primary" @click="save">Import as test strings</a>
                 </template>
             </div>
         </div>
@@ -61,18 +81,17 @@ limitations under the License.
         },
         data() {
             return {
-                package: "vue",
+                package: "",
                 parsed: [],
                 error: false,
+                updating: false,
             }
         },
         watch: {
-            input() {
+            package() {
+                this.$data.updating = true;
                 this.update()
             },
-            trim() {
-                this.update()
-            }
         },
         methods: {
             walk(fs, dir) {
@@ -88,6 +107,8 @@ limitations under the License.
                 return results;
             },
             async update() {
+                if (!this.$data.package.length) return;
+
                 try {
                     // Get the tarball URL
                     const data = await (await fetch(`https://cors-anywhere.herokuapp.com/https://registry.npmjs.com/${this.$data.package}`)).json();
@@ -104,25 +125,27 @@ limitations under the License.
                     const memFs = await untarToMemory(tarStream);
 
                     // Get all files in fs
-                    const files = this.walk(memFs, '/');
-                    this.$data.parsed = files;
+                    this.$data.parsed = this.walk(memFs, '/').map(x => x.substr('/package/'.length));
+                    this.$data.error = false
                 } catch (e) {
                     console.error(e);
                     this.$data.parsed = []
                     this.$data.error = true
                 }
+
+                this.$data.updating = false
             },
             open() {
                 this.$refs.modal.open()
                 this.update() // Ensure we're showing the parsed data for what's in the textarea
 
                 this.$nextTick(() => {
-                    this.$refs.input.dispatchEvent(new Event("input")) // Convince autoresize something happened
-                    this.$nextTick(() => this.$refs.input.focus())
+                    this.$refs.package.dispatchEvent(new Event("input")) // Convince autoresize something happened
+                    this.$nextTick(() => this.$refs.package.focus())
                 })
             },
             save() {
-                this.$emit("save", this.$data.parsed, 'NPM package')
+                this.$emit("save", this.$data.parsed, `${this.$data.package} NPM package`)
                 this.$refs.modal.close()
             },
         }
