@@ -46,7 +46,7 @@ limitations under the License.
                     Files in package:
                 </h3>
                 <p v-if="updating">
-                     {{ updating }}
+                    {{ updating }}
                 </p>
                 <p v-else-if="error">
                     Sorry, an error occurred when trying to load files from the NPM package.
@@ -98,8 +98,8 @@ limitations under the License.
         methods: {
             untar(stream) {
                 return new Promise((resolve, reject) => {
-                    const paths = [];
-                    const extractHandler = extract();
+                    const paths = []
+                    const extractHandler = extract()
 
                     extractHandler.on("entry", (header, stream, next) => {
                         if (header.type === "file")
@@ -134,7 +134,7 @@ limitations under the License.
                     const tarStream = new Readable()
                     tarStream.push(tar)
                     tarStream.push(null)
-                    const files = await this.untar(tarStream);
+                    const files = await this.untar(tarStream)
 
                     // We're done
                     this.$data.parsed = files.map(x => x.substr("package/".length))
