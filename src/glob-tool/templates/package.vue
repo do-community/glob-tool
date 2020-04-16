@@ -149,10 +149,8 @@ limitations under the License.
             },
             open() {
                 this.$refs.modal.open()
-                this.update() // Ensure we're showing the parsed data for what's in the textarea
 
                 this.$nextTick(() => {
-                    this.$refs.package.dispatchEvent(new Event("input")) // Convince autoresize something happened
                     this.$nextTick(() => this.$refs.package.focus())
                 })
             },

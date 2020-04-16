@@ -175,19 +175,25 @@ $header: #0071fe;
 
       .modal-card-body {
         .columns {
+          max-height: 100%;
           margin: 0;
 
-          .title {
-            small {
-              font-size: .65em;
+          .column {
+            max-height: 100%;
+            overflow: auto;
+
+            .title {
+              small {
+                font-size: .65em;
+              }
             }
-          }
 
-          pre {
-            padding: 0;
+            pre {
+              padding: 0;
 
-            textarea {
-              background: transparent;
+              textarea {
+                background: transparent;
+              }
             }
           }
         }
