@@ -46,7 +46,7 @@ limitations under the License.
                     Files in package:
                 </h3>
                 <p v-if="updating">
-                    Loading files from NPM package...
+                     {{ updating }}
                 </p>
                 <p v-else-if="error">
                     Sorry, an error occurred when trying to load files from the NPM package.
@@ -72,8 +72,8 @@ limitations under the License.
 <script>
     import { inflate } from "pako"
     import { Readable } from "stream"
+    import { extract } from "tar-stream"
     import fetch from "node-fetch"
-    import untarToMemory from "untar-memory"
     import Modal from "do-vue/src/templates/modal"
 
     export default {
@@ -96,38 +96,48 @@ limitations under the License.
             },
         },
         methods: {
-            walk(fs, dir) {
-                const files = fs.readdirSync(dir)
-                const results = []
-                files.forEach(file => {
-                    if (fs.statSync(dir + file).isDirectory()) {
-                        results.push(...this.walk(fs, dir + file + "/"))
-                    } else {
-                        results.push(dir + file)
-                    }
+            untar(stream) {
+                return new Promise((resolve, reject) => {
+                    const paths = [];
+                    const extractHandler = extract();
+
+                    extractHandler.on("entry", (header, stream, next) => {
+                        if (header.type === "file")
+                            paths.push(header.name)
+
+                        stream.on("end", () => { next() })
+                        stream.resume()
+                    })
+
+                    extractHandler.on("finish", () => { resolve(paths) })
+                    extractHandler.on("error", (err) => { reject(err) })
+
+                    stream.pipe(extractHandler)
                 })
-                return results
             },
             async update() {
                 if (!this.$data.package.length) return
 
                 try {
                     // Get the tarball URL
+                    this.$data.updating = "Fetching package information from NPM..."
                     const data = await (await fetch(`https://cors-anywhere.herokuapp.com/https://registry.npmjs.com/${this.$data.package}`)).json()
                     const tarUrl = data.versions[data["dist-tags"].latest].dist.tarball
 
                     // Get the tarball contents
+                    this.$data.updating = "Downloading the contents of the package..."
                     const tarRes = await fetch(`https://cors-anywhere.herokuapp.com/${tarUrl}`)
                     const tar = inflate(await tarRes.arrayBuffer())
 
                     // Parse the tarball to an fs
+                    this.$data.updating = "Extracting the files in the package..."
                     const tarStream = new Readable()
                     tarStream.push(tar)
                     tarStream.push(null)
-                    const memFs = await untarToMemory(tarStream)
+                    const files = await this.untar(tarStream);
 
-                    // Get all files in fs
-                    this.$data.parsed = this.walk(memFs, "/").map(x => x.substr("/package/".length))
+                    // We're done
+                    this.$data.parsed = files.map(x => x.substr("package/".length))
                     this.$data.error = false
                 } catch (e) {
                     console.error(e)

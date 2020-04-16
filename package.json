@@ -41,8 +41,8 @@
     "parcel-bundler": "^1.12.4",
     "pretty-checkbox-vue": "^1.1.9",
     "query-string": "^6.12.1",
+    "tar-stream": "^2.1.2",
     "tree-parse": "0.0.5",
-    "untar-memory": "^1.2.0",
     "vue": "^2.6.11",
     "vue-hot-reload-api": "^2.3.3"
   },
