@@ -166,7 +166,7 @@ $header: #0071fe;
     }
   }
 
-  .tree-import {
+  .import-modal {
     .modal-card {
       @extend .container;
 
@@ -176,18 +176,24 @@ $header: #0071fe;
       .modal-card-body {
         .columns {
           margin: 0;
+          max-height: 100%;
 
-          .title {
-            small {
-              font-size: .65em;
+          .column {
+            max-height: 100%;
+            overflow: auto;
+
+            .title {
+              small {
+                font-size: .65em;
+              }
             }
-          }
 
-          pre {
-            padding: 0;
+            pre {
+              padding: 0;
 
-            textarea {
-              background: transparent;
+              textarea {
+                background: transparent;
+              }
             }
           }
         }

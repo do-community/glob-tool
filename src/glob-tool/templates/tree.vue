@@ -15,7 +15,7 @@ limitations under the License.
 -->
 
 <template>
-    <Modal ref="modal" title="Import tree command" class="tree-import">
+    <Modal ref="modal" title="Import tree command" class="import-modal">
         <div class="columns">
             <div class="column">
                 <h3 class="title is-4">
@@ -112,7 +112,7 @@ limitations under the License.
                 })
             },
             save() {
-                this.$emit("save", this.$data.parsed)
+                this.$emit("save", this.$data.parsed, "tree command")
                 this.$refs.modal.close()
             },
         }
