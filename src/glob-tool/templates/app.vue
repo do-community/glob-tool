@@ -242,8 +242,8 @@ limitations under the License.
                 this.store(glob, children)
 
                 // Run the hit/miss check
-                this.$data.hits = 0;
-                this.$data.misses = 0;
+                this.$data.hits = 0
+                this.$data.misses = 0
                 children.forEach(child => {
                     // Remove all classes to start
                     child.classList.remove("miss")
@@ -263,10 +263,10 @@ limitations under the License.
 
                     // If a match, add hit, else add miss
                     if (minimatch(child.textContent, glob)) {
-                        this.$data.hits += 1;
+                        this.$data.hits += 1
                         child.classList.add("hit")
                     } else {
-                        this.$data.misses += 1;
+                        this.$data.misses += 1
                         child.classList.add("miss")
                     }
                 })
