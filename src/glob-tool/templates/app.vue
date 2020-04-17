@@ -68,8 +68,9 @@ limitations under the License.
             </div>
             <p class="matches-only">
                 <template v-if="matchesOnly">
-                    {{ misses.toLocaleString() }} test{{ misses === 1 ? '' : 's' }} that didn't match
-                    {{ misses === 1 ? 'is' : 'are' }} hidden.
+                    {{ misses.toLocaleString() }} {{ i18n.templates.app.hidden[0] }}{{ misses === 1 ? '' : 's' }}
+                    {{ i18n.templates.app.hidden[1] }} {{ i18n.templates.app.hidden[misses === 1 ? 2 : 3] }}
+                    {{ i18n.templates.app.hidden[4] }}.
                 </template>
                 <template v-else>
                     &nbsp;
@@ -87,8 +88,8 @@ limitations under the License.
                 </PrettyCheck>
 
                 <div>
-                    <a class="button is-primary is-small" @click="showTree">Import tree command</a>
-                    <a class="button is-primary is-small" @click="showPackage">Import NPM package</a>
+                    <a class="button is-primary is-small" @click="showTree">{{ i18n.templates.app.importTree }}</a>
+                    <a class="button is-primary is-small" @click="showPackage">{{ i18n.templates.app.importNPM }}</a>
                 </div>
             </div>
 
