@@ -106,8 +106,8 @@ $header: #0071fe;
     p {
       &.matches-only {
         color: $muted;
-        font-style: italic;
         font-size: .9em;
+        font-style: italic;
         margin: -$margin 0 0;
       }
     }
