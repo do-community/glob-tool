@@ -54,7 +54,7 @@ limitations under the License.
             </h2>
             <div class="input-container">
                 <div ref="textarea"
-                     class="textarea input"
+                     :class="`textarea input${matchesOnly ? ' matches-only' : ''}`"
                      contenteditable="true"
                      @keydown="down"
                      @keyup="up"
@@ -66,16 +66,30 @@ limitations under the License.
                     <div>/test/some/globs</div>
                 </div>
             </div>
+            <p class="matches-only">
+                <template v-if="matchesOnly">
+                    {{ misses.toLocaleString() }} {{ i18n.templates.app.hidden[0] }}{{ misses === 1 ? '' : 's' }}
+                    {{ i18n.templates.app.hidden[1] }} {{ i18n.templates.app.hidden[misses === 1 ? 2 : 3] }}
+                    {{ i18n.templates.app.hidden[4] }}.
+                </template>
+                <template v-else>
+                    &nbsp;
+                </template>
+            </p>
 
             <div class="actions-container">
                 <PrettyCheck v-model="commentsEnabled" class="p-default p-curve p-fill p-icon">
                     <i slot="extra" class="icon fas fa-check"></i>
                     {{ i18n.templates.app.comments }}
                 </PrettyCheck>
+                <PrettyCheck v-model="matchesOnly" class="p-default p-curve p-fill p-icon">
+                    <i slot="extra" class="icon fas fa-check"></i>
+                    {{ i18n.templates.app.matches }}
+                </PrettyCheck>
 
                 <div>
-                    <a class="button is-primary is-small" @click="showTree">Import tree command</a>
-                    <a class="button is-primary is-small" @click="showPackage">Import NPM package</a>
+                    <a class="button is-primary is-small" @click="showTree">{{ i18n.templates.app.importTree }}</a>
+                    <a class="button is-primary is-small" @click="showPackage">{{ i18n.templates.app.importNPM }}</a>
                 </div>
             </div>
 
@@ -116,6 +130,9 @@ limitations under the License.
                 i18n,
                 shiftActive: false,
                 commentsEnabled: null,
+                matchesOnly: null,
+                hits: 0,
+                misses: 0,
             }
         },
         watch: {
@@ -147,8 +164,14 @@ limitations under the License.
                 this.$data.commentsEnabled = !(comments.toString().toLowerCase() === "false")
                 this.test()
             },
+            setMatches(matches) {
+                // Explicit true, otherwise false
+                this.$data.matchesOnly = (matches.toString().toLowerCase() === "true")
+                this.test()
+            },
             set(glob, tests) {
                 this.$data.commentsEnabled = true
+                this.$data.matchesOnly = false
                 this.setGlob(glob)
                 this.setTests(tests)
             },
@@ -157,12 +180,14 @@ limitations under the License.
                 if (parsed.glob) this.setGlob(parsed.glob)
                 if (parsed.tests) this.setTests(parsed.tests)
                 this.setComments(parsed.comments || "true") // Default comments to enabled
+                this.setMatches(parsed.matches || "false") // Default matches only to disabled
             },
             store(glob, tests) {
                 const parsed = queryString.parse(window.location.search)
                 parsed.glob = glob
                 parsed.tests = tests.map(x => x.textContent).filter(x => !!x.trim())
                 if (this.$data.commentsEnabled !== null) parsed.comments = this.$data.commentsEnabled
+                if (this.$data.matchesOnly !== null) parsed.matches = this.$data.matchesOnly
                 window.history.pushState({}, "", `?${queryString.stringify(parsed)}`)
             },
             empty() {
@@ -217,13 +242,15 @@ limitations under the License.
                 this.store(glob, children)
 
                 // Run the hit/miss check
+                this.$data.hits = 0
+                this.$data.misses = 0
                 children.forEach(child => {
                     // Remove all classes to start
                     child.classList.remove("miss")
                     child.classList.remove("hit")
                     child.classList.remove("comment")
 
-                    // If blank, ddo nothing more
+                    // If blank, do nothing more
                     if (child.textContent.trim() === "") {
                         return
                     }
@@ -236,8 +263,10 @@ limitations under the License.
 
                     // If a match, add hit, else add miss
                     if (minimatch(child.textContent, glob)) {
+                        this.$data.hits += 1
                         child.classList.add("hit")
                     } else {
+                        this.$data.misses += 1
                         child.classList.add("miss")
                     }
                 })
