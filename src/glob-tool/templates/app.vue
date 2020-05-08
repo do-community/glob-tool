@@ -149,14 +149,22 @@ limitations under the License.
                 this.test()
             },
             setTests(tests) {
+                // Handle a single string
+                if (!Array.isArray(tests)) tests = [tests]
+
+                // Clear all the old tests out
                 while (this.$refs.textarea.firstChild) {
                     this.$refs.textarea.removeChild(this.$refs.textarea.firstChild)
                 }
+
+                // Add the new tests
                 tests.forEach(test => {
                     const div = document.createElement("div")
                     div.textContent = test
                     this.$refs.textarea.appendChild(div)
                 })
+
+                // Test!
                 this.test()
             },
             setComments(comments) {
