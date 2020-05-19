@@ -1,5 +1,5 @@
 <!--
-Copyright 2019 DigitalOcean
+Copyright 2020 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,14 +16,18 @@ limitations under the License.
 
 <template>
     <div class="help">
-        <h3>What are globs?</h3>
+        <h3 id="what-are-globs">
+            What are globs?
+        </h3>
         <p>
             Globs are the patterns you use when you run commands such as <code class="slim">ls src/*.js</code>, or you
             might see them used in config files such as a <code class="slim">.gitignore</code> where you might see
             <code class="slim">.cache/*</code>, for example.
         </p>
 
-        <h3>What can you use in them?</h3>
+        <h3 id="what-can-you-use">
+            What can you use in them?
+        </h3>
         <p>
             Alongside plaintext, globs have a set of control (or special) characters that allow them to become far more
             powerful that just some boring old text.
@@ -83,6 +87,45 @@ limitations under the License.
                 subdirectories. This allows for recursive directory searching easily.
             </li>
         </ul>
+
+        <h3 id="using-the-tool-programmatically">
+            Using the tool programmatically
+        </h3>
+        <p>
+            All options for the tool are stored in URL query parameters, which allows for easy programmatic generation
+            of a glob test page. The glob string is stored in the <code class="slim">glob</code> query parameter, with
+            the test strings being stored in the <code class="slim">tests</code> query parameter, one parameter per test
+            string. Eg. <code class="slim">glob=*.js&tests=hello.js&tests=hello.md</code>.
+        </p>
+        <p>
+            The settings are also stored in the query parameters, with the comments enabled setting being controlled via
+            the <code class="slim">comments</code> query param (<code class="slim">true</code> or
+            <code class="slim">false</code>). Similarly, the show matches only setting is set with the
+            <code class="slim">matches</code> query param. Eg. <code class="slim">comments=true&matches=false</code>.
+        </p>
+        <p>
+            If you're generating a long URI (> 2000 chars), it may be advisable to compress it to avoid a 414 request
+            URI too long error. We support compressed URL parameters using the following technique:
+        </p>
+        <ol>
+            <li>
+                Generate your initial URL parameters as normal (without the leading ?), eg.
+                <code class="slim">glob=*.js&tests=hello.js&tests=hello.md</code>.
+            </li>
+            <li>
+                Use the <a href="https://www.npmjs.com/package/lzutf8" target="_blank" rel="noopener">lzutf8</a> library
+                to compress that string to a new base64 string, eg.
+                <code class="slim">lzutf8.compress('glob=*.js&tests=hello.js&tests=hello.md', { outputEncoding: 'Base64' })</code>
+                <i class="fas fa-long-arrow-alt-right"></i>
+                <code class="slim">Z2xvYj0qLmpzJnRlc3RzPWhlbGxv0A9tZA==</code>
+            </li>
+            <li>
+                Set the URL query parameter <code class="slim">c</code> to this compressed string, eg.
+                <code class="slim">`?c=${encodeURIComponent('Z2xvYj0qLmpzJnRlc3RzPWhlbGxv0A9tZA==')}`</code>
+                <i class="fas fa-long-arrow-alt-right"></i>
+                <code class="slim">?c=Z2xvYj0qLmpzJnRlc3RzPWhlbGxv0A9tZA%3D%3D</code>
+            </li>
+        </ol>
     </div>
 </template>
 

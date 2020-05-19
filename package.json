@@ -36,6 +36,7 @@
     "babel-polyfill": "^6.26.0",
     "do-bulma": "git+https://github.com/do-community/do-bulma.git",
     "do-vue": "git+https://github.com/do-community/do-vue.git",
+    "lzutf8": "^0.5.5",
     "node-fetch": "^2.6.0",
     "pako": "^1.0.11",
     "parcel-bundler": "^1.12.4",
