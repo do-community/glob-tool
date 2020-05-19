@@ -88,20 +88,20 @@ limitations under the License.
             </li>
         </ul>
 
-        <h3 id="using-the-tool-programatically">
-            Using the tool programatically
+        <h3 id="using-the-tool-programmatically">
+            Using the tool programmatically
         </h3>
         <p>
             All options for the tool are stored in URL query parameters, which allows for easy programmatic generation
-            of a glob test page. The glob string is stored in the <code class="slim">glob</code> query parameter. The
-            test strings are stored in the <code class="slim">tests</code> query parameter, with one parameter per test
-            string.
+            of a glob test page. The glob string is stored in the <code class="slim">glob</code> query parameter, with
+            the test strings being stored in the <code class="slim">tests</code> query parameter, one parameter per test
+            string. Eg. <code class="slim">glob=*.js&tests=hello.js&tests=hello.md</code>.
         </p>
         <p>
             The settings are also stored in the query parameters, with the comments enabled setting being controlled via
-            the <code class="slim">comments</code> query parameter (<code class="slim">true</code> or
+            the <code class="slim">comments</code> query param (<code class="slim">true</code> or
             <code class="slim">false</code>). Similarly, the show matches only setting is set with the
-            <code class="slim">matches</code> query parameter.
+            <code class="slim">matches</code> query param. Eg. <code class="slim">comments=true&matches=false</code>.
         </p>
         <p>
             If you're generating a long URI (> 2000 chars), it may be advisable to compress it to avoid a 414 request
