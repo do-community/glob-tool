@@ -105,6 +105,7 @@ limitations under the License.
 <script>
     import minimatch from "minimatch"
     import queryString from "query-string"
+    import LZUTF8 from "lzutf8"
     import PrettyCheck from "pretty-checkbox-vue/check"
     import i18n from "../i18n"
     import Header from "do-vue/src/templates/header"
@@ -183,20 +184,37 @@ limitations under the License.
                 this.setGlob(glob)
                 this.setTests(tests)
             },
-            load() {
+            parseUri() {
                 const parsed = queryString.parse(window.location.search)
+                if (parsed.c) return queryString.parse(LZUTF8.decompress(parsed.c, { inputEncoding: "Base64" }))
+                return parsed
+            },
+            load() {
+                const parsed = this.parseUri()
                 if (parsed.glob) this.setGlob(parsed.glob)
                 if (parsed.tests) this.setTests(parsed.tests)
                 this.setComments(parsed.comments || "true") // Default comments to enabled
                 this.setMatches(parsed.matches || "false") // Default matches only to disabled
             },
             store(glob, tests) {
-                const parsed = queryString.parse(window.location.search)
+                const parsed = this.parseUri()
                 parsed.glob = glob
                 parsed.tests = tests.map(x => x.textContent).filter(x => !!x.trim())
                 if (this.$data.commentsEnabled !== null) parsed.comments = this.$data.commentsEnabled
                 if (this.$data.matchesOnly !== null) parsed.matches = this.$data.matchesOnly
-                window.history.pushState({}, "", `?${queryString.stringify(parsed)}`)
+
+                const query = queryString.stringify(parsed)
+                if (query.length <= 2000) {
+                    window.history.pushState({}, "", `?${query}`)
+                    return
+                }
+
+                const compressed = queryString.stringify({ c: LZUTF8.compress(query, { outputEncoding: "Base64" }) })
+                console.info(`Compressing query params to reduce URI length: ${query.length.toLocaleString()} -> ${compressed.length.toLocaleString()}`)
+                if (compressed.length > 2000) {
+                    console.warn("URI is too long with compressed query params")
+                }
+                window.history.pushState({}, "", `?${compressed}`)
             },
             empty() {
                 // Ensure no lost brs
