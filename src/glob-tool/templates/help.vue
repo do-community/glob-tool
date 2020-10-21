@@ -104,28 +104,10 @@ limitations under the License.
             <code class="slim">matches</code> query param. Eg. <code class="slim">comments=true&matches=false</code>.
         </p>
         <p>
-            If you're generating a long URI (> 2000 chars), it may be advisable to compress it to avoid a 414 request
-            URI too long error. We support compressed URL parameters using the following technique:
+            If you're generating a long URI (> 4000 chars), it may be advisable to prefix the query string with a hash
+            (<code class="slim">#</code>) to avoid a 414 request URI too long error. E.g.
+            <code class="slim">#?glob=*.js&tests=hello.js&tests=hello.md</code>.
         </p>
-        <ol>
-            <li>
-                Generate your initial URL parameters as normal (without the leading ?), eg.
-                <code class="slim">glob=*.js&tests=hello.js&tests=hello.md</code>.
-            </li>
-            <li>
-                Use the <a href="https://www.npmjs.com/package/lzutf8" target="_blank" rel="noopener">lzutf8</a> library
-                to compress that string to a new base64 string, eg.
-                <code class="slim">lzutf8.compress('glob=*.js&tests=hello.js&tests=hello.md', { outputEncoding: 'Base64' })</code>
-                <i class="fas fa-long-arrow-alt-right"></i>
-                <code class="slim">Z2xvYj0qLmpzJnRlc3RzPWhlbGxv0A9tZA==</code>
-            </li>
-            <li>
-                Set the URL query parameter <code class="slim">c</code> to this compressed string, eg.
-                <code class="slim">`?c=${encodeURIComponent('Z2xvYj0qLmpzJnRlc3RzPWhlbGxv0A9tZA==')}`</code>
-                <i class="fas fa-long-arrow-alt-right"></i>
-                <code class="slim">?c=Z2xvYj0qLmpzJnRlc3RzPWhlbGxv0A9tZA%3D%3D</code>
-            </li>
-        </ol>
     </div>
 </template>
 
