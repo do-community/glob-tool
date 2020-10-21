@@ -202,8 +202,11 @@ limitations under the License.
                 if (this.$data.matchesOnly !== null) parsed.matches = this.$data.matchesOnly
 
                 const query = queryString.stringify(parsed)
-                window.history.pushState({}, "",
-                    `${window.location.pathname}${query.length > 4000 ? '#' : ''}${query.length ? '?' : ''}${query}`)
+                window.history.pushState(
+                    {},
+                    "",
+                    `${window.location.pathname}${query.length > 4000 ? "#" : ""}${query.length ? "?" : ""}${query}`
+                )
             },
             empty() {
                 // Ensure no lost brs
