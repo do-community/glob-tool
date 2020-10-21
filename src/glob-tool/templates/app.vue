@@ -105,7 +105,6 @@ limitations under the License.
 <script>
     import minimatch from "minimatch"
     import queryString from "query-string"
-    import LZUTF8 from "lzutf8"
     import PrettyCheck from "pretty-checkbox-vue/check"
     import i18n from "../i18n"
     import Header from "do-vue/src/templates/header"
@@ -185,9 +184,8 @@ limitations under the License.
                 this.setTests(tests)
             },
             parseUri() {
-                const parsed = queryString.parse(window.location.search)
-                if (parsed.c) return queryString.parse(LZUTF8.decompress(parsed.c, { inputEncoding: "Base64" }))
-                return parsed
+                const query = window.location.search || window.location.hash.slice(1)
+                return queryString.parse(query)
             },
             load() {
                 const parsed = this.parseUri()
@@ -204,17 +202,11 @@ limitations under the License.
                 if (this.$data.matchesOnly !== null) parsed.matches = this.$data.matchesOnly
 
                 const query = queryString.stringify(parsed)
-                if (query.length <= 2000) {
-                    window.history.pushState({}, "", `?${query}`)
-                    return
-                }
-
-                const compressed = queryString.stringify({ c: LZUTF8.compress(query, { outputEncoding: "Base64" }) })
-                console.info(`Compressing query params to reduce URI length: ${query.length.toLocaleString()} -> ${compressed.length.toLocaleString()}`)
-                if (compressed.length > 2000) {
-                    console.warn("URI is too long with compressed query params")
-                }
-                window.history.pushState({}, "", `?${compressed}`)
+                window.history.pushState(
+                    {},
+                    "",
+                    `${window.location.pathname}${query.length > 4000 ? "#" : ""}${query.length ? "?" : ""}${query}`
+                )
             },
             empty() {
                 // Ensure no lost brs
