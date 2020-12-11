@@ -17,15 +17,15 @@ limitations under the License.
 <template>
     <div class="all do-bulma">
         <Header :title="i18n.templates.app.title">
-            <template v-slot:description>
+            <template #description>
                 {{ i18n.templates.app.description }}
             </template>
-            <template v-slot:header>
+            <template #header>
                 <div>
                     <Examples @set="set"></Examples>
                 </div>
             </template>
-            <template v-slot:buttons>
+            <template #buttons>
             </template>
         </Header>
 
