@@ -3,7 +3,7 @@
         "module": "commonjs",
         "target": "es2018",
         "allowJs": true,
-        "noEmit": true,
+        "noEmit": false,
         "noImplicitAny": true,
         "strict": true
     },
