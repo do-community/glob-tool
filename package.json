@@ -32,7 +32,7 @@
   "homepage": "https://github.com/do-community/glob-tool#readme",
   "dependencies": {
     "do-bulma": "git+https://github.com/do-community/do-bulma.git",
-    "do-vue": "git+https://github.com/do-community/do-vue.git#f13494d7a58ba8f00d121e15bc4fcbbc36234701",
+    "do-vue": "git+https://github.com/do-community/do-vue.git#869ac289fb02195a90ee70402ed97bd3a008905b",
     "node-fetch": "^2.6.1",
     "pako": "^2.0.2",
     "pretty-checkbox-vue": "^1.1.9",
