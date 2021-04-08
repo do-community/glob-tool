@@ -121,12 +121,12 @@ limitations under the License.
                 try {
                     // Get the tarball URL
                     this.$data.updating = "Fetching package information from NPM..."
-                    const data = await (await fetch(`https://cors-anywhere.herokuapp.com/https://registry.npmjs.com/${this.$data.package}`)).json()
+                    const data = await (await fetch(`https://cors.bridged.cc/https://registry.npmjs.com/${this.$data.package}`)).json()
                     const tarUrl = data.versions[data["dist-tags"].latest].dist.tarball
 
                     // Get the tarball contents
                     this.$data.updating = "Downloading the contents of the package..."
-                    const tarRes = await fetch(`https://cors-anywhere.herokuapp.com/${tarUrl}`)
+                    const tarRes = await fetch(`https://cors.bridged.cc/${tarUrl}`)
                     const tar = inflate(await tarRes.arrayBuffer())
 
                     // Parse the tarball to an fs
