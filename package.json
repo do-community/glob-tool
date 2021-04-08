@@ -36,24 +36,24 @@
     "node-fetch": "^2.6.1",
     "pako": "^2.0.2",
     "pretty-checkbox-vue": "^1.1.9",
-    "query-string": "^6.13.7",
+    "query-string": "^7.0.0",
     "request": "^2.88.2",
     "tar-stream": "^2.1.4",
-    "tree-parse": "0.0.5",
+    "tree-parse": "0.0.6",
     "vue": "^2.6.12",
     "vue-hot-reload-api": "^2.3.3"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.9.1",
-    "@typescript-eslint/parser": "^4.9.1",
+    "@typescript-eslint/eslint-plugin": "^4.21.0",
+    "@typescript-eslint/parser": "^4.21.0",
     "copyfiles": "^2.4.1",
-    "eslint": "^7.15.0",
-    "eslint-plugin-vue": "^7.2.0",
+    "eslint": "^7.23.0",
+    "eslint-plugin-vue": "^7.8.0",
     "posthtml": "^0.15.1",
     "posthtml-extend": "^0.6.0",
     "sass": "^1.30.0",
     "sass-lint": "^1.13.1",
-    "typescript": "^4.1.2",
+    "typescript": "^4.2.4",
     "vue-template-compiler": "^2.6.12"
   }
 }
