@@ -39,7 +39,7 @@
     "query-string": "^7.0.0",
     "request": "^2.88.2",
     "tar-stream": "^2.1.4",
-    "tree-parse": "0.0.6",
+    "tree-parse": "0.0.7",
     "vue": "^2.6.12"
   },
   "devDependencies": {
