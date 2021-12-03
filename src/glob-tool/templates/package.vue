@@ -1,5 +1,5 @@
 <!--
-Copyright 2020 DigitalOcean
+Copyright 2021 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -115,18 +115,27 @@ limitations under the License.
                     stream.pipe(extractHandler)
                 })
             },
+            fetchCors(url) {
+                return fetch(`https://cors.bridged.cc/${url}`, {
+                    method: "GET",
+                    headers: {
+                        "x-cors-grida-api-key": process.env.CORS_API_KEY
+                    },
+                })
+            },
             async update() {
                 if (!this.$data.package.length) return
 
                 try {
                     // Get the tarball URL
                     this.$data.updating = "Fetching package information from NPM..."
-                    const data = await (await fetch(`https://cors.bridged.cc/https://registry.npmjs.com/${this.$data.package}`)).json()
+                    const data = await this.fetchCors(`https://registry.npmjs.com/${this.$data.package}`)
+                        .then(res => res.json())
                     const tarUrl = data.versions[data["dist-tags"].latest].dist.tarball
 
                     // Get the tarball contents
                     this.$data.updating = "Downloading the contents of the package..."
-                    const tarRes = await fetch(`https://cors.bridged.cc/${tarUrl}`)
+                    const tarRes = await this.fetchCors(tarUrl)
                     const tar = inflate(await tarRes.arrayBuffer())
 
                     // Parse the tarball to an fs

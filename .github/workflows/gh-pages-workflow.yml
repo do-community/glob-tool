@@ -29,6 +29,8 @@ jobs:
         npm ci
         npm test
         npm run build
+      env:
+        CORS_API_KEY: ${{ secrets.CORS_API_KEY }}
 
     - name: Deploy master to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@3.7.1
