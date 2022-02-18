@@ -1,5 +1,5 @@
 /*
-Copyright 2020 DigitalOcean
+Copyright 2022 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,11 +15,13 @@ limitations under the License.
 */
 
 $header: #0071fe;
+
 @import "~do-bulma/src/style";
 
 .do-bulma {
-  $pretty--color-default: $primary;
-  $pretty--color-dark: $primary;
+  $pretty--color-default: $primary; // stylelint-disable-line scss/dollar-variable-pattern
+  $pretty--color-dark: $primary; // stylelint-disable-line scss/dollar-variable-pattern
+
   @import "~pretty-checkbox/src/pretty-checkbox";
 
   a.jump-link {
@@ -47,6 +49,7 @@ $header: #0071fe;
       .textarea.input {
         $icon-width: 18px;
         $left: $margin * 2 + $icon-width;
+
         box-shadow: inset ($margin * 1.5 + $icon-width) 0 darken($panel, 5%);
         padding: ($margin / 2) $margin ($margin / 2) $left;
 
@@ -66,7 +69,7 @@ $header: #0071fe;
           &::before {
             content: "";
             display: inline-block;
-            font-family: "Font Awesome 5 Free";
+            font-family: "Font Awesome 5 Free"; // stylelint-disable-line font-family-no-missing-generic-family-keyword
             font-size: 14px;
             font-weight: 900;
             left: $margin * .75;
@@ -163,6 +166,7 @@ $header: #0071fe;
 
         &::before {
           $bullet-size: 6px;
+
           background: $dark-blue;
           border-radius: $bullet-size / 2;
           content: "";
@@ -183,7 +187,7 @@ $header: #0071fe;
 
   .import-modal {
     .modal-card {
-      @extend .container;
+      @extend .container; // stylelint-disable-line scss/at-extend-no-missing-placeholder
 
       flex-grow: 0;
       width: 100%;
