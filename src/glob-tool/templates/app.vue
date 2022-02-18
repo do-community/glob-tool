@@ -1,5 +1,5 @@
 <!--
-Copyright 2020 DigitalOcean
+Copyright 2022 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -36,13 +36,14 @@ limitations under the License.
             <div class="input-container">
                 <label for="globInput" class="hidden">{{ i18n.templates.app.input }}</label>
                 <i class="fas fa-magic"></i>
-                <input id="globInput"
-                       ref="input"
-                       class="input"
-                       type="text"
-                       placeholder="/**/*.js"
-                       value="/**/*.js"
-                       @keyup="test"
+                <input
+                    id="globInput"
+                    ref="input"
+                    class="input"
+                    type="text"
+                    placeholder="/**/*.js"
+                    value="/**/*.js"
+                    @keyup="test"
                 />
             </div>
 
@@ -53,12 +54,13 @@ limitations under the License.
                 <br /><small>{{ i18n.templates.app.testsSubtitle }}</small>
             </h2>
             <div class="input-container">
-                <div ref="textarea"
-                     :class="`textarea input${matchesOnly ? ' matches-only' : ''}`"
-                     contenteditable="true"
-                     @keydown="down"
-                     @keyup="up"
-                     @paste="paste"
+                <div
+                    ref="textarea"
+                    :class="`textarea input${matchesOnly ? ' matches-only' : ''}`"
+                    contenteditable="true"
+                    @keydown="down"
+                    @keyup="up"
+                    @paste="paste"
                 >
                     <div>// This will match as it ends with '.js'</div>
                     <div>/hello/world.js</div>

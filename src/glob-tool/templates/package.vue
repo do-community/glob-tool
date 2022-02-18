@@ -1,5 +1,5 @@
 <!--
-Copyright 2021 DigitalOcean
+Copyright 2022 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -24,18 +24,20 @@ limitations under the License.
                 <div class="input-container">
                     <i v-if="updating" class="fas fa-circle-notch fa-spin"></i>
                     <i v-else class="fas fa-box-open"></i>
-                    <input ref="package"
-                           v-model.trim.lazy="package"
-                           class="input"
-                           type="text"
-                           placeholder="vue"
-                           :disabled="updating"
+                    <input
+                        ref="package"
+                        v-model.trim.lazy="package"
+                        class="input"
+                        type="text"
+                        placeholder="vue"
+                        :disabled="updating"
                     />
                 </div>
 
-                <a v-if="!updating && !error && package.length && parsed.length"
-                   class="button is-primary"
-                   @click="save"
+                <a
+                    v-if="!updating && !error && package.length && parsed.length"
+                    class="button is-primary"
+                    @click="save"
                 >
                     Import files as test strings
                 </a>
