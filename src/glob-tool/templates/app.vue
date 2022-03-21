@@ -81,11 +81,15 @@ limitations under the License.
 
             <div class="actions-container">
                 <PrettyCheck v-model="commentsEnabled" class="p-default p-curve p-fill p-icon">
-                    <i slot="extra" class="icon fas fa-check"></i>
+                    <template #extra>
+                        <i class="icon fas fa-check"></i>
+                    </template>
                     {{ i18n.templates.app.comments }}
                 </PrettyCheck>
                 <PrettyCheck v-model="matchesOnly" class="p-default p-curve p-fill p-icon">
-                    <i slot="extra" class="icon fas fa-check"></i>
+                    <template #extra>
+                        <i class="icon fas fa-check"></i>
+                    </template>
                     {{ i18n.templates.app.matches }}
                 </PrettyCheck>
 
@@ -107,7 +111,7 @@ limitations under the License.
 <script>
     import minimatch from "minimatch"
     import queryString from "query-string"
-    import PrettyCheck from "pretty-checkbox-vue/check"
+    import PrettyCheck from "do-vue/src/templates/pretty-checkbox-vue/pretty_check"
     import i18n from "../i18n"
     import Header from "do-vue/src/templates/header"
     import Footer from "do-vue/src/templates/footer"
