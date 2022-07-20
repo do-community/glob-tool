@@ -51,7 +51,7 @@ $header: #0071fe;
         $left: $margin * 2 + $icon-width;
 
         box-shadow: inset ($margin * 1.5 + $icon-width) 0 darken($panel, 5%);
-        padding: ($margin / 2) $margin ($margin / 2) $left;
+        padding: ($margin * .5) $margin ($margin * .5) $left;
 
         &.matches-only {
           .miss {
@@ -136,7 +136,7 @@ $header: #0071fe;
             label {
               color: $dark-grey;
               font-size: 14px;
-              padding-left: $margin / 2;
+              padding-left: $margin * .5;
 
               &::before,
               &::after {
@@ -168,7 +168,7 @@ $header: #0071fe;
           $bullet-size: 6px;
 
           background: $dark-blue;
-          border-radius: $bullet-size / 2;
+          border-radius: $bullet-size * .5;
           content: "";
           display: block;
           height: $bullet-size;
@@ -179,7 +179,7 @@ $header: #0071fe;
         }
 
         + li {
-          margin-top: $margin / 2;
+          margin-top: $margin * .5;
         }
       }
     }

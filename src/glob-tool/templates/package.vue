@@ -75,7 +75,6 @@ limitations under the License.
     import { inflate } from "pako"
     import { Readable } from "stream"
     import { extract } from "tar-stream"
-    import fetch from "node-fetch"
     import Modal from "do-vue/src/templates/modal"
 
     export default {
