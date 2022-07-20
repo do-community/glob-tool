@@ -116,27 +116,19 @@ limitations under the License.
                     stream.pipe(extractHandler)
                 })
             },
-            fetchCors(url) {
-                return fetch(`https://cors.bridged.cc/${url}`, {
-                    method: "GET",
-                    headers: {
-                        "x-cors-grida-api-key": process.env.CORS_API_KEY
-                    },
-                })
-            },
             async update() {
                 if (!this.$data.package.length) return
 
                 try {
                     // Get the tarball URL
                     this.$data.updating = "Fetching package information from NPM..."
-                    const data = await this.fetchCors(`https://registry.npmjs.com/${this.$data.package}`)
+                    const data = await fetch(`https://registry.npmjs.com/${this.$data.package}`)
                         .then(res => res.json())
                     const tarUrl = data.versions[data["dist-tags"].latest].dist.tarball
 
                     // Get the tarball contents
                     this.$data.updating = "Downloading the contents of the package..."
-                    const tarRes = await this.fetchCors(tarUrl)
+                    const tarRes = await fetch(tarUrl)
                     const tar = inflate(await tarRes.arrayBuffer())
 
                     // Parse the tarball to an fs
