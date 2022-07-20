@@ -33,6 +33,7 @@
   "dependencies": {
     "do-bulma": "github:do-community/do-bulma",
     "do-vue": "github:do-community/do-vue",
+    "minimatch": "^5.1.0",
     "pako": "^2.0.4",
     "pretty-checkbox-vue": "^1.1.9",
     "query-string": "^7.1.1",
