@@ -93,7 +93,7 @@ limitations under the License.
                     {{ i18n.templates.app.matches }}
                 </PrettyCheck>
 
-                <div>
+                <div class="buttons">
                     <a class="button is-primary is-small" @click="showTree">{{ i18n.templates.app.importTree }}</a>
                     <a class="button is-primary is-small" @click="showPackage">{{ i18n.templates.app.importNPM }}</a>
                 </div>
