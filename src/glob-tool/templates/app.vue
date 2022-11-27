@@ -46,6 +46,14 @@ limitations under the License.
                     @keyup="test"
                 />
             </div>
+            <div class="actions-container">
+                <PrettyCheck v-model="matchOptions.dot" class="p-default p-curve p-fill p-icon">
+                    <template #extra>
+                        <i class="icon fas fa-check"></i>
+                    </template>
+                    {{ i18n.templates.app.matchOptionDot }}
+                </PrettyCheck>
+            </div>
 
             <br />
 
@@ -137,6 +145,9 @@ limitations under the License.
                 shiftActive: false,
                 commentsEnabled: null,
                 matchesOnly: null,
+                matchOptions: {
+                    dot: false
+                },
                 hits: 0,
                 misses: 0,
             }
@@ -144,6 +155,12 @@ limitations under the License.
         watch: {
             commentsEnabled() {
                 this.test()
+            },
+            matchOptions: {
+                handler() {
+                    this.test()
+                },
+                deep: true
             }
         },
         mounted() {
@@ -183,6 +200,19 @@ limitations under the License.
                 this.$data.matchesOnly = (matches.toString().toLowerCase() === "true")
                 this.test()
             },
+            setMatchOptions(options) {
+                // Handle a single string
+                if (!Array.isArray(options)) options = [options]
+
+                options.forEach(o => {
+                    const [opt, value] = o.split(":")
+                    // only set options that have been defined in $data
+                    // Vue uses proxies so can't check with hasOwnProperty, use typeof !== 'undefined' instead
+                    if (opt && value && typeof this.matchOptions[opt] !== "undefined") {
+                        this.matchOptions[opt] = value === "true" ? true : (value === "false" ? false : value)
+                    }
+                })
+            },
             set(glob, tests) {
                 this.$data.commentsEnabled = true
                 this.$data.matchesOnly = false
@@ -197,6 +227,7 @@ limitations under the License.
                 const parsed = this.parseUri()
                 if (parsed.glob) this.setGlob(parsed.glob)
                 if (parsed.tests) this.setTests(parsed.tests)
+                if (parsed.options) this.setMatchOptions(parsed.options)
                 this.setComments(parsed.comments || "true") // Default comments to enabled
                 this.setMatches(parsed.matches || "false") // Default matches only to disabled
             },
@@ -204,8 +235,10 @@ limitations under the License.
                 const parsed = this.parseUri()
                 parsed.glob = glob
                 parsed.tests = tests.map(x => x.textContent).filter(x => !!x.trim())
+                parsed.options = []
                 if (this.$data.commentsEnabled !== null) parsed.comments = this.$data.commentsEnabled
                 if (this.$data.matchesOnly !== null) parsed.matches = this.$data.matchesOnly
+                if (this.$data.matchOptions.dot) parsed.options.push("dot:true")
 
                 const query = queryString.stringify(parsed)
                 window.history.pushState(
@@ -286,7 +319,7 @@ limitations under the License.
                     }
 
                     // If a match, add hit, else add miss
-                    if (minimatch(child.textContent, glob)) {
+                    if (minimatch(child.textContent, glob, this.matchOptions)) {
                         this.$data.hits += 1
                         child.classList.add("hit")
                     } else {
