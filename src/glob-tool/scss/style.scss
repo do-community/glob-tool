@@ -146,6 +146,16 @@ $header: #0071fe;
           }
         }
       }
+
+      .buttons {
+        display: flex;
+        flex-flow: row wrap;
+        gap: $margin;
+
+        .button {
+          margin: $margin * .5 0;
+        }
+      }
     }
   }
 
