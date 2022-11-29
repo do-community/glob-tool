@@ -6,6 +6,7 @@ export default {
     testsSubtitle: "Enter strings here to test against the glob",
     comments: "Comments enabled? (Start a line with '//' to write a comment when enabled)",
     matches: "Show matches only?",
+    matchOptionDot: "Wildcards match path segments starting with a dot",
     hidden: ["test", "that didn't match", "is", "are", "hidden"],
     importTree: "Import tree command",
     importNPM: "Import NPM package",
