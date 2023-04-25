@@ -37,7 +37,6 @@
     "pako": "^2.1.0",
     "pretty-checkbox-vue": "^1.1.9",
     "query-string": "^7.1.1",
-    "request": "^2.88.2",
     "tar-stream": "^2.2.0",
     "tree-parse": "0.0.7",
     "vue": "^3.2.45"
