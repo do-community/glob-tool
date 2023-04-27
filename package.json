@@ -32,7 +32,7 @@
   "homepage": "https://github.com/do-community/glob-tool#readme",
   "dependencies": {
     "do-bulma": "github:do-community/do-bulma#MattIPv4/update-dependencies",
-    "do-vue": "github:do-community/do-vue#MattIPv4/update-dependencies",
+    "do-vue": "github:do-community/do-vue",
     "minimatch": "^9.0.0",
     "pako": "^2.1.0",
     "pretty-checkbox-vue": "^1.1.9",
