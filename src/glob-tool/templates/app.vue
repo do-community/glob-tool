@@ -1,5 +1,5 @@
 <!--
-Copyright 2022 DigitalOcean
+Copyright 2023 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -117,7 +117,7 @@ limitations under the License.
 </template>
 
 <script>
-    import minimatch from "minimatch"
+    import { minimatch } from "minimatch"
     import queryString from "query-string"
     import PrettyCheck from "do-vue/src/templates/pretty-checkbox-vue/pretty_check"
     import i18n from "../i18n"
