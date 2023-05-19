@@ -241,11 +241,9 @@ limitations under the License.
                 if (this.$data.matchOptions.dot) parsed.options.push("dot:true")
 
                 const query = queryString.stringify(parsed)
-                window.history.pushState(
-                    {},
-                    "",
-                    `${window.location.pathname}${query.length > 4000 ? "#" : ""}${query.length ? "?" : ""}${query}`
-                )
+                const url = `${window.location.pathname}${query.length > 4000 ? "#" : ""}${query.length ? "?" : ""}${query}`
+                if (url !== `${window.location.pathname}${window.location.search}${window.location.hash}`)
+                    window.history.pushState({}, "", url)
             },
             empty() {
                 // Ensure no lost brs
