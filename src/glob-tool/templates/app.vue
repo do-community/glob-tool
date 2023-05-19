@@ -246,7 +246,7 @@ limitations under the License.
                     const query = queryString.stringify(parsed)
                     const url = `${window.location.pathname}${query.length > 4000 ? "#" : ""}${query.length ? "?" : ""}${query}`
                     if (url !== `${window.location.pathname}${window.location.search}${window.location.hash}`)
-                        window.history.pushState({}, "", url)
+                        window.history.replaceState({}, "", url)
                 }, 50)
             },
             empty() {
