@@ -150,6 +150,7 @@ limitations under the License.
                 },
                 hits: 0,
                 misses: 0,
+                storeDebounce: null,
             }
         },
         watch: {
@@ -232,18 +233,21 @@ limitations under the License.
                 this.setMatches(parsed.matches || "false") // Default matches only to disabled
             },
             store(glob, tests) {
-                const parsed = this.parseUri()
-                parsed.glob = glob
-                parsed.tests = tests.map(x => x.textContent).filter(x => !!x.trim())
-                parsed.options = []
-                if (this.$data.commentsEnabled !== null) parsed.comments = this.$data.commentsEnabled
-                if (this.$data.matchesOnly !== null) parsed.matches = this.$data.matchesOnly
-                if (this.$data.matchOptions.dot) parsed.options.push("dot:true")
+                if (this.storeDebounce) clearTimeout(this.storeDebounce)
+                this.storeDebounce = setTimeout(() => {
+                    const parsed = this.parseUri()
+                    parsed.glob = glob
+                    parsed.tests = tests.map(x => x.textContent).filter(x => !!x.trim())
+                    parsed.options = []
+                    if (this.$data.commentsEnabled !== null) parsed.comments = this.$data.commentsEnabled
+                    if (this.$data.matchesOnly !== null) parsed.matches = this.$data.matchesOnly
+                    if (this.$data.matchOptions.dot) parsed.options.push("dot:true")
 
-                const query = queryString.stringify(parsed)
-                const url = `${window.location.pathname}${query.length > 4000 ? "#" : ""}${query.length ? "?" : ""}${query}`
-                if (url !== `${window.location.pathname}${window.location.search}${window.location.hash}`)
-                    window.history.pushState({}, "", url)
+                    const query = queryString.stringify(parsed)
+                    const url = `${window.location.pathname}${query.length > 4000 ? "#" : ""}${query.length ? "?" : ""}${query}`
+                    if (url !== `${window.location.pathname}${window.location.search}${window.location.hash}`)
+                        window.history.pushState({}, "", url)
+                }, 50)
             },
             empty() {
                 // Ensure no lost brs
