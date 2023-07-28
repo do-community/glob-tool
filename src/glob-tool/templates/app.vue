@@ -276,6 +276,13 @@ limitations under the License.
                         child.parentElement.removeChild(child)
                     }
                 }
+
+                // If we have any lines that end with a carriage return, remove it
+                for (const child of this.$refs.textarea.children) {
+                    if (child.textContent.endsWith("\r")) {
+                        child.textContent = child.textContent.slice(0, -1)
+                    }
+                }
             },
             focus() {
                 // If we're focused in the textarea, focus on first div instead
