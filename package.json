@@ -33,27 +33,27 @@
   "dependencies": {
     "do-bulma": "github:do-community/do-bulma#MattIPv4/update-dependencies",
     "do-vue": "github:do-community/do-vue#MattIPv4/update-dependencies",
-    "minimatch": "^9.0.0",
+    "minimatch": "^9.0.3",
     "pako": "^2.1.0",
     "pretty-checkbox-vue": "^1.1.9",
     "query-string": "^8.1.0",
     "tar-stream": "^2.2.0",
     "tree-parse": "0.0.7",
-    "vue": "^3.2.47"
+    "vue": "^3.3.4"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.59.1",
-    "@typescript-eslint/parser": "^5.59.1",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
     "copyfiles": "^2.4.1",
-    "eslint": "^8.39.0",
-    "eslint-plugin-vue": "^9.11.0",
+    "eslint": "^8.46.0",
+    "eslint-plugin-vue": "^9.16.1",
     "posthtml": "^0.16.6",
     "posthtml-extend": "^0.6.5",
-    "sass": "^1.62.0",
-    "stylelint": "^15.10.1",
+    "sass": "^1.64.2",
+    "stylelint": "^15.10.2",
     "stylelint-config-standard-scss": "^9.0.0",
     "stylelint-order": "^6.0.3",
-    "typescript": "^5.0.4",
+    "typescript": "^5.1.6",
     "vue-template-compiler": "^2.7.14"
   },
   "overrides": {
