@@ -18,16 +18,6 @@ You can then take the `dist` folder and put it on your web server/bucket.
 
 GitHub Actions is setup to do this automatically for this repository to deploy to gh-pages.
 
-### CORS proxy
-
-To integrate with NPm and provide users with the ability to ues file names from an NPM package, the tool utilises the
-cors.bridged.cc proxy as NPM does not have CORS headers on their registry.
-
-The CORS proxy is only used for the NPM functionality, but requires an API key that will be used in the client to
-authenticate the requests, set as the `CORS_API_KEY` environment variable.
-
-You can find out more about getting an API key for the CORS proxy at <https://github.com/gridaco/base/issues/23>.
-
 ## Source Structure
 
 ### [`src/glob-tool`](./src/glob-tool)
